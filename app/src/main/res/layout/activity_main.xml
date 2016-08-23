@@ -41,7 +41,8 @@
                 android:padding="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/textfeld"
-                android:text="kimo" />
+                android:contextClickable="false"
+                android:hint="E-Mail" />
 
         </LinearLayout>
 
@@ -63,7 +64,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/textfeld"
                 android:id="@+id/pass"
-                android:text="kimo" />
+                android:hint="Password" />
 
         </LinearLayout>
 

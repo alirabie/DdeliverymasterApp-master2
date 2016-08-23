@@ -36,11 +36,17 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView logbtn;
     private String msg="";
 
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_main);
+        if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+           getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        }
+
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -84,9 +90,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-
-
-
                 username = user.getText().toString();
                 password = pass.getText().toString();
 
@@ -103,9 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<DriverID> call, Response<DriverID> response) {
 
 
-                       if (mProgressDialog.isShowing())
+                        if (mProgressDialog.isShowing())
                             mProgressDialog.dismiss();
-
 
 
                         msg = response.body().getMessage();
