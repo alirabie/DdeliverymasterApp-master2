@@ -18,9 +18,9 @@
         <ImageView
             android:layout_width="50pt"
             android:layout_height="50pt"
-            android:src="@drawable/ico"
             android:layout_gravity="center"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:src="@drawable/logotop" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"

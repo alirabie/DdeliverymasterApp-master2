@@ -43,9 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_main);
-        if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-           getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

@@ -41,16 +41,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
-
-
-
+        //Get Lat and Lng
         Bundle extras = getIntent().getExtras();
         lat=Float.parseFloat(extras.get("lat").toString());
         lng=Float.parseFloat(extras.get("lng").toString());
 
 
 
+        //Close Button
         close=(Button)findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

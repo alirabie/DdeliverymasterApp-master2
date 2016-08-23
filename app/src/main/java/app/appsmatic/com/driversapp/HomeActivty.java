@@ -26,32 +26,33 @@ import app.appsmatic.com.driversapp.Fragments.Profile;
 import app.appsmatic.com.driversapp.GPS.GPSTracker;
 
 public class HomeActivty extends AppCompatActivity {
-
     public static String id;
     double x;
     double y;
-    private int[] tabIcons = {1,2,3};
+    private int[] tabIcons = {R.drawable.orders_tab_icon,R.drawable.archived_tab_icon,R.drawable.profile_tab_icon};
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Activity Animated Transition
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_activty);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        //Check Os Ver For Set Status Bar
         if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
-
-
+        //Invoking Check Gps Status method
         checkGpsStatus();
 
 
-
-
+        //Get Driver Id
+        id=this.getIntent().getStringExtra("DriverID");
 
 
 
@@ -89,28 +90,25 @@ public class HomeActivty extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
+        //Tab Layout With icons
         ViewPager p=(ViewPager)findViewById(R.id.veiwp);
         setupViewPager(p);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //Add Icons To tabs
-//            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
- //           tabLayout.getTabAt(1).setIcon(tabIcons[1]);
- //           tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+
         tabLayout.setupWithViewPager(p);
 
-        id=this.getIntent().getStringExtra("DriverID");
+        //Add Icons To tabs
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
 
 
 
     }
 
 
+
+    //Setup View Pager With Fragments
     private void setupViewPager(ViewPager viewPager) {
         VeiwpagerAdb adapter = new VeiwpagerAdb(getSupportFragmentManager());
         adapter.addFragment(new Orders(), "Orders");
