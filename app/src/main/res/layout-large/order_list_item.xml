@@ -6,7 +6,8 @@
     android:gravity="center"
     android:layout_gravity="center"
     android:layout_marginBottom="10dp"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:id="@+id/layout">
 
     <TextView
         android:layout_width="wrap_content"

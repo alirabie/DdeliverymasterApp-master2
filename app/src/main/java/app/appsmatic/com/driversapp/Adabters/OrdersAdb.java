@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 import app.appsmatic.com.driversapp.API.Models.Order;
 import app.appsmatic.com.driversapp.MapsActivity;
+import app.appsmatic.com.driversapp.Orders_info;
 import app.appsmatic.com.driversapp.R;
 
 /**
@@ -132,8 +134,25 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
         holder.statusok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.statusok.setVisibility(View.VISIBLE);
-                holder.status.setVisibility(View.INVISIBLE);
+                holder.statusok.setVisibility(View.INVISIBLE);
+
+
+            }
+        });
+
+
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, Orders_info.class)
+                        .putExtra("phone",orders.get(position).getMobileNo()+"")
+                        .putExtra("statusID",orders.get(position).getStatusID())
+                        .putExtra("custname",orders.get(position).getCustomer()+"")
+                        .putExtra("orderId",orders.get(position).getOrderID().toString())
+                        .putExtra("lat",orders.get(position).getLatitude())
+                        .putExtra("lng",orders.get(position).getLongtitude()));
+
 
             }
         });
@@ -153,6 +172,7 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
 
         TextView orderId,custName,duration,totalPrice,status,statusok;
         ImageView call,sms,map;
+        RelativeLayout layout;
 
 
 
@@ -170,6 +190,8 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
             call=(ImageView)itemView.findViewById(R.id.callbtn);
             sms=(ImageView)itemView.findViewById(R.id.smsbtn);
             map=(ImageView)itemView.findViewById(R.id.mapbtn);
+
+            layout=(RelativeLayout)itemView.findViewById(R.id.layout);
 
 
         }
