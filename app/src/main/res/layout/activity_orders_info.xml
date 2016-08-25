@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView4"
+            android:id="@+id/back_btn"
             android:src="@drawable/navbar_goback_icon"
             android:layout_gravity="left"
             android:layout_centerVertical="true"
@@ -246,11 +246,11 @@
             android:background="@drawable/buttons_orange"
             android:padding="11dp"
             android:layout_weight="2"
-            android:layout_marginRight="21dp"
-            android:layout_marginEnd="21dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/order_details_sms_btn"
-            android:layout_toStartOf="@+id/order_details_sms_btn" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -260,11 +260,11 @@
             android:src="@drawable/icon_ms_button"
             android:padding="11dp"
             android:layout_weight="2"
-            android:layout_marginRight="19dp"
-            android:layout_marginEnd="19dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/order_details_picked"
-            android:layout_toStartOf="@+id/order_details_picked" />
+            android:layout_toRightOf="@+id/order_details_call_btn"
+            android:layout_toEndOf="@+id/order_details_call_btn" />
 
         <TextView
             android:layout_width="120dp"
@@ -279,7 +279,7 @@
             android:textColor="#000000"
             android:textSize="9dp"
             android:layout_marginRight="95dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="10dp"
             android:layout_alignTop="@+id/order_details_sms_btn"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -287,7 +287,7 @@
             android:layout_width="120dp"
             android:layout_height="30dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="DELEVERED"
+            android:text="Delivered"
             android:id="@+id/order_details_delevered"
             android:background="@drawable/button_green"
             android:padding="10dp"
@@ -296,10 +296,64 @@
             android:textColor="#000000"
             android:textSize="9dp"
             android:layout_marginRight="95dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="10dp"
             android:layout_alignTop="@+id/order_details_sms_btn"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="On My Way"
+            android:id="@+id/order_details_way"
+            android:background="@drawable/button_green"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="9dp"
+            android:layout_marginRight="95dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignTop="@+id/order_details_sms_btn"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Done"
+            android:id="@+id/order_details_done"
+            android:background="@drawable/button_green"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="9dp"
+            android:layout_marginRight="95dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignTop="@+id/order_details_sms_btn"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Failed"
+            android:id="@+id/order_details_failed_btn"
+            android:textSize="10dp"
+            android:background="@drawable/button_red"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/order_details_sms_btn"
+            android:layout_toEndOf="@+id/order_details_sms_btn"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
+            android:textStyle="bold"
+            android:textColor="#000000" />
 
     </RelativeLayout>
 
@@ -321,7 +375,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Total Price : 500"
-        android:id="@+id/textView14"
+        android:id="@+id/order_details_tv_totalprice"
         android:padding="5dp"
         android:background="#ffffff"
         android:textStyle="bold"

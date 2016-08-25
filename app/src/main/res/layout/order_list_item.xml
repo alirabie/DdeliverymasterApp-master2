@@ -100,7 +100,7 @@
     <TextView
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:text="PICKED"
+        android:text="Confirm"
         android:id="@+id/statusbtn"
         android:textStyle="bold"
         android:textColor="#000000"
@@ -114,7 +114,7 @@
     <TextView
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:text="DELEVERED"
+        android:text="Show Order"
         android:id="@+id/statusbtnok"
         android:textStyle="bold"
         android:textColor="#000000"

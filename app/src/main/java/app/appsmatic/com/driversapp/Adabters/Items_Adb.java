@@ -33,14 +33,11 @@ public class Items_Adb extends RecyclerView.Adapter<Items_Adb.vh3> {
 
     @Override
     public void onBindViewHolder(vh3 holder, int position) {
+
         holder.item.setText(orderDetails.get(position).getName()+"");
         holder.qty.setText(orderDetails.get(position).getQuantity()+"");
         holder.price.setText(orderDetails.get(position).getItemPrice()+"");
-        holder.total.setText("");
-
-
-
-
+        holder.total.setText(orderDetails.get(position).getItemPrice()*orderDetails.get(position).getQuantity()+"");
 
     }
 

@@ -38,7 +38,7 @@ public class Order {
     private String latitude;
     @SerializedName("TotalAmount")
     @Expose
-    private Integer totalAmount;
+    private Float totalAmount;
 
 
     /**
@@ -208,7 +208,7 @@ public class Order {
      * @return
      * The totalAmount
      */
-    public Integer getTotalAmount() {
+    public Float getTotalAmount() {
         return totalAmount;
     }
 
@@ -217,7 +217,7 @@ public class Order {
      * @param totalAmount
      * The TotalAmount
      */
-    public void setTotalAmount(Integer totalAmount) {
+    public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
     }
 

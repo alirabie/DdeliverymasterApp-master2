@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Delivery Master app</string>
+    <string name="app_name">Delivery Master</string>
     <string name="title_activity_home_activty">Home</string>
     <string name="order_details">Order Details</string>
 

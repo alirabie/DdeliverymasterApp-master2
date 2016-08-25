@@ -27,8 +27,8 @@ import app.appsmatic.com.driversapp.GPS.GPSTracker;
 
 public class HomeActivty extends AppCompatActivity {
     public static String id;
-    double x;
-    double y;
+    static double x;
+    static double y;
     private int[] tabIcons = {R.drawable.orders_tab_icon,R.drawable.archived_tab_icon,R.drawable.profile_tab_icon};
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

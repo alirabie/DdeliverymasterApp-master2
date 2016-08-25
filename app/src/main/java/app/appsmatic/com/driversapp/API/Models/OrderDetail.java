@@ -35,7 +35,7 @@ public class OrderDetail {
     private Integer quantity;
     @SerializedName("ItemPrice")
     @Expose
-    private Integer itemPrice;
+    private Float itemPrice;
     @SerializedName("UserID")
     @Expose
     private String userID;
@@ -198,7 +198,7 @@ public class OrderDetail {
      * @return
      * The itemPrice
      */
-    public Integer getItemPrice() {
+    public Float getItemPrice() {
         return itemPrice;
     }
 
@@ -207,7 +207,7 @@ public class OrderDetail {
      * @param itemPrice
      * The ItemPrice
      */
-    public void setItemPrice(Integer itemPrice) {
+    public void setItemPrice(Float itemPrice) {
         this.itemPrice = itemPrice;
     }
 

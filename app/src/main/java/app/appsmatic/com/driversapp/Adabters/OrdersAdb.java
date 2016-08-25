@@ -1,11 +1,13 @@
 package app.appsmatic.com.driversapp.Adabters;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,10 +21,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.appsmatic.com.driversapp.API.DriversApi;
+import app.appsmatic.com.driversapp.API.Genrator;
+import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
 import app.appsmatic.com.driversapp.API.Models.Order;
 import app.appsmatic.com.driversapp.MapsActivity;
 import app.appsmatic.com.driversapp.Orders_info;
 import app.appsmatic.com.driversapp.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Mido PC on 8/17/2016.
@@ -31,6 +39,7 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
 
      List<Order>orders=new ArrayList<>();
      Context context;
+     int statusId=0;
 
     public OrdersAdb(List<Order> orders, Context context) {
         this.orders = orders;
@@ -46,17 +55,23 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
     @Override
     public void onBindViewHolder(final vh holder, final int position) {
 
-        holder.statusok.setVisibility(View.INVISIBLE);
-        holder.status.setVisibility(View.INVISIBLE);
+        holder.confirmed.setVisibility(View.INVISIBLE);
+        holder.confirm.setVisibility(View.INVISIBLE);
 
 
         //Check order Status To Set button Status
         switch (orders.get(position).getStatusID()){
             case 0 :
-                holder.status.setVisibility(View.VISIBLE);
+                holder.confirm.setVisibility(View.VISIBLE);
                 break;
-            case 1:
-                holder.statusok.setVisibility(View.VISIBLE);
+            case 6:
+                holder.confirmed.setVisibility(View.VISIBLE);
+                break;
+            case 5:
+                holder.confirmed.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                holder.confirmed.setVisibility(View.VISIBLE);
                 break;
 
         }
@@ -67,9 +82,14 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
 
 
 
+        //Fill tv Id and tv Name and tv Total price
+
         holder.orderId.setText(orders.get(position).getOrderID()+"");
         holder.custName.setText(orders.get(position).getCustomer()+"");
-        holder.totalPrice.setText("Total Price : "+orders.get(position).getTotalAmount()+" SR");
+        holder.totalPrice.setText("Total Price : " + orders.get(position).getTotalAmount() + " SR");
+
+        //Call Button
+
         holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +124,8 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
 
         });
 
+        //SmS Button
+
         holder.sms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,50 +134,85 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
                         + orders.get(position).getMobileNo().toString())));
             }
         });
+
+        //Map Button
+
         holder.map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, MapsActivity.class).putExtra("lat", orders.get(position).getLatitude()).putExtra("lng", orders.get(position).getLongtitude()));
+                context.startActivity(new Intent(context, MapsActivity.class)
+                        .putExtra("custname",orders.get(position).getCustomer())
+                        .putExtra("lat", orders.get(position).getLatitude())
+                        .putExtra("lng", orders.get(position).getLongtitude()));
             }
         });
 
+
+
+        //When confirm Button is clicked
         
-        holder.status.setOnClickListener(new View.OnClickListener() {
+        holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.status.setVisibility(View.INVISIBLE);
-                holder.statusok.setVisibility(View.VISIBLE);
+
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Do You Want to Confirm This Order ??")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+
+
+                                //Send 6 Status
+
+
+
+
+
+                                holder.confirm.setVisibility(View.INVISIBLE);
+                                holder.confirmed.setVisibility(View.VISIBLE);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+
+                            }
+                        }).setIcon(android.R.drawable.alert_light_frame);
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+
+
+
 
 
 
             }
         });
 
-        holder.statusok.setOnClickListener(new View.OnClickListener() {
+
+        //When confirmed Button is Clicked and go to order details
+
+        holder.confirmed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.statusok.setVisibility(View.INVISIBLE);
 
-
-            }
-        });
-
-
-
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 context.startActivity(new Intent(context, Orders_info.class)
-                        .putExtra("phone",orders.get(position).getMobileNo()+"")
-                        .putExtra("statusID",orders.get(position).getStatusID())
-                        .putExtra("custname",orders.get(position).getCustomer()+"")
-                        .putExtra("orderId",orders.get(position).getOrderID().toString())
-                        .putExtra("lat",orders.get(position).getLatitude())
-                        .putExtra("lng",orders.get(position).getLongtitude()));
-
-
+                        .putExtra("phone", orders.get(position).getMobileNo() + "")
+                        .putExtra("totalPrice", orders.get(position).getTotalAmount())
+                        .putExtra("statusID", orders.get(position).getStatusID())
+                        .putExtra("custname", orders.get(position).getCustomer() + "")
+                        .putExtra("orderId", orders.get(position).getOrderID().toString())
+                        .putExtra("lat", orders.get(position).getLatitude())
+                        .putExtra("lng", orders.get(position).getLongtitude()));
             }
         });
+
+
+
 
 
 
@@ -167,10 +224,13 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
         return orders.size();
     }
 
+
+   //View holder class
+
     public static class vh extends RecyclerView.ViewHolder {
 
 
-        TextView orderId,custName,duration,totalPrice,status,statusok;
+        TextView orderId,custName,duration,totalPrice, confirm, confirmed;
         ImageView call,sms,map;
         RelativeLayout layout;
 
@@ -183,9 +243,8 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
             custName=(TextView)itemView.findViewById(R.id.tv_customername);
             duration=(TextView)itemView.findViewById(R.id.tv_duration);
             totalPrice=(TextView)itemView.findViewById(R.id.tv_price);
-            status=(TextView)itemView.findViewById(R.id.statusbtn);
-            statusok=(TextView)itemView.findViewById(R.id.statusbtnok);
-
+            confirm =(TextView)itemView.findViewById(R.id.statusbtn);
+            confirmed =(TextView)itemView.findViewById(R.id.statusbtnok);
 
             call=(ImageView)itemView.findViewById(R.id.callbtn);
             sms=(ImageView)itemView.findViewById(R.id.smsbtn);

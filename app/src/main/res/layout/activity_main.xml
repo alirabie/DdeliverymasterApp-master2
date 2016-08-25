@@ -10,8 +10,8 @@
 
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:padding="25dp"
         android:layout_gravity="center_horizontal"
@@ -75,7 +75,7 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
         android:textStyle="bold"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textColor="#ffffff"
         android:textColorHint="#ffffff" />
 
@@ -87,14 +87,14 @@
         android:padding="10dp"
         android:layout_weight="1"
         android:id="@+id/pass"
-        android:layout_below="@+id/user"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="#ffffff"
         android:textColorHint="#ffffff"
-        android:hint="Password" />
+        android:hint="Password"
+        android:layout_below="@+id/user"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -105,6 +105,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp" />
+        android:layout_marginBottom="45dp"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

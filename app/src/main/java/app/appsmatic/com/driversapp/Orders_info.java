@@ -42,12 +42,13 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
     Float lat;
     Float lng;
     int statusId;
+    Float totalprice;
     String orderId,custmerName,phoneNum;
     RecyclerView itemslist;
     TextView name,id,duration;
-    TextView deleveredbtn,packedbtn;
+    TextView deleveredbtn,packedbtn,onwaybtn,donebtn,failedbtn,tv_total_price;
 
-    private ImageView sms,phone;
+    private ImageView sms,phone,backbtn;
     private TextView delevered,packed;
 
 
@@ -57,6 +58,17 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_info);
 
+        //Back button setup
+        backbtn=(ImageView)findViewById(R.id.back_btn);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        //Receive Data from Orders
         Bundle extras = getIntent().getExtras();
         lat=Float.parseFloat(extras.get("lat").toString());
         lng=Float.parseFloat(extras.get("lng").toString());
@@ -64,9 +76,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
         custmerName=extras.getString("custname");
         phoneNum=extras.getString("phone");
         statusId=extras.getInt("statusID");
-
-
-
+        totalprice=extras.getFloat("totalPrice");
 
 
 
@@ -74,56 +84,101 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
         packedbtn=(TextView)findViewById(R.id.order_details_picked);
         deleveredbtn=(TextView)findViewById(R.id.order_details_delevered);
+        onwaybtn=(TextView)findViewById(R.id.order_details_way);
+        donebtn=(TextView)findViewById(R.id.order_details_done);
+        failedbtn=(TextView)findViewById(R.id.order_details_failed_btn);
 
-        packedbtn.setVisibility(View.INVISIBLE);
+        //Set Buttons Invisible
+
+
         deleveredbtn.setVisibility(View.INVISIBLE);
+        onwaybtn.setVisibility(View.INVISIBLE);
+        donebtn.setVisibility(View.INVISIBLE);
+        failedbtn.setVisibility(View.INVISIBLE);
+
+
+
 
         //Check Order Status to set Button
         switch (statusId){
-            case 0:
-                packedbtn.setVisibility(View.VISIBLE);
+
+            case 6:
+                onwaybtn.setVisibility(View.VISIBLE);
                 break;
-            case 1:
+            case 5:
                 deleveredbtn.setVisibility(View.VISIBLE);
+                failedbtn.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                donebtn.setVisibility(View.VISIBLE);
                 break;
 
         }
 
-        //When Button Packed Clicked send Code
-        packedbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"1").enqueue(new Callback<ChangeStautMsg>() {
-                    @Override
-                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
-
-                        Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
-
-                    }
-                });
 
 
 
-                packedbtn.setVisibility(View.INVISIBLE);
-                deleveredbtn.setVisibility(View.VISIBLE);
-            }
-        });
+
+
 
 
 
         //When Delevered Btn Clicked send Status Id Code
+        onwaybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"5").enqueue(new Callback<ChangeStautMsg>() {
+                    @Override
+                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
+
+                        Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
+
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
+
+                    }
+                });
+
+                onwaybtn.setVisibility(View.INVISIBLE);
+                deleveredbtn.setVisibility(View.VISIBLE);
+                failedbtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+
+        failedbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"4").enqueue(new Callback<ChangeStautMsg>() {
+                    @Override
+                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
+                        Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
+
+                    }
+                });
+
+                failedbtn.setVisibility(View.INVISIBLE);
+                deleveredbtn.setVisibility(View.INVISIBLE);
+            }
+
+        });
+
+
         deleveredbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"2").enqueue(new Callback<ChangeStautMsg>() {
+                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"3").enqueue(new Callback<ChangeStautMsg>() {
                     @Override
                     public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
 
@@ -137,9 +192,19 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
                     }
                 });
 
+
                 deleveredbtn.setVisibility(View.INVISIBLE);
+                donebtn.setVisibility(View.VISIBLE);
+
+
             }
         });
+
+
+
+
+
+
 
 
 
@@ -165,10 +230,11 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
                 name=(TextView)findViewById(R.id.tv_info_cust_name);
                 id=(TextView)findViewById(R.id.tv_orser_info_id);
-
+                tv_total_price=(TextView)findViewById(R.id.order_details_tv_totalprice);
 
                 id.setText("Order# "+orderId);
                 name.setText(custmerName);
+                tv_total_price.setText("Total Price : "+totalprice+" SR");
 
             }
 
@@ -255,7 +321,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
         mMap = googleMap;
         // Add a marker in city and move the camera
         LatLng latLng = new LatLng(lat,lng);
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(latLng).title(custmerName));
         float zoomLevel = (float) 16.0; //This goes up to 21
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
 
