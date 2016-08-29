@@ -38,11 +38,11 @@ import retrofit2.Response;
 
 public class Orders extends Fragment {
 
-    private String driverID;
-    RecyclerView ordersList;
 
-
-
+    private RecyclerView ordersList;
+    private OrdersAdb adb;
+    private List<Order>orders;
+    private TextView noOrdersLable;
 
 
     @Nullable
@@ -50,67 +50,74 @@ public class Orders extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_orders, container, false);
 
-
-
-
-
-
-
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        driverID=HomeActivty.id;
+
+        orders=new ArrayList<Order>();
+        noOrdersLable=(TextView)getActivity().findViewById(R.id.no_orders);
+        noOrdersLable.setVisibility(View.INVISIBLE);
+        if (orders.size()==0){
+            noOrdersLable.setVisibility(View.VISIBLE);
+        }
 
 
-
-
-
-
-        Genrator.createService(DriversApi.class).getOrders(driverID).enqueue(new Callback<List<Order>>() {
+        Genrator.createService(DriversApi.class).getOrders(HomeActivty.id).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
-                ordersList.setAdapter(new OrdersAdb(response.body(), getContext()));
-                ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
-
+                orders.addAll(response.body());
             }
 
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
 
+                Toast.makeText(getContext(),t.getMessage().toString(),Toast.LENGTH_SHORT).show();
+
             }
         });
 
 
-
-
+        //Setup Orders List
+        ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
+        adb=new OrdersAdb(orders,getContext());
+        ordersList.setAdapter(adb);
+        ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
 
     }
 
+
+
+
+
     @Override
     public void onResume() {
         super.onResume();
-        Genrator.createService(DriversApi.class).getOrders(driverID).enqueue(new Callback<List<Order>>() {
+        Genrator.createService(DriversApi.class).getOrders(HomeActivty.id).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                OrdersAdb adb=new OrdersAdb(response.body(), getContext());
-                ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
-                ordersList.setAdapter(adb);
-                ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
-
+                orders.addAll(response.body());
             }
-            //k
 
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
 
+                Toast.makeText(getContext(),t.getMessage().toString(),Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
+
+        //Setup Orders List
+        ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
+        adb=new OrdersAdb(orders,getContext());
+        ordersList.setAdapter(adb);
+        ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
 }

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
@@ -31,12 +32,12 @@ import retrofit2.Response;
 
 public class Archived extends Fragment {
 
-    private String driverID;
-    TextView txt;
-    RecyclerView arclist;
-    ArchivedOrdersAdb adb;
-    TextView total;
-    float totalvalue=0;
+    private TextView noAchived,total;
+    private RecyclerView arclist;
+    private ArchivedOrdersAdb adb;
+    private float totalvalue=0;
+    private List<ArchivedOrder>archivedOrders;
+
 
 
     @Nullable
@@ -48,35 +49,43 @@ public class Archived extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        driverID= HomeActivty.id;
 
 
+
+        archivedOrders=new ArrayList<ArchivedOrder>();
         total=(TextView)getActivity().findViewById(R.id.ar_total);
-        arclist = (RecyclerView) getActivity().findViewById(R.id.archived_list);
+        noAchived=(TextView)getActivity().findViewById(R.id.no_archived);
+        noAchived.setVisibility(View.INVISIBLE);
 
 
-        Genrator.createService(DriversApi.class).getArchivedOrders(driverID).enqueue(new Callback<List<ArchivedOrder>>() {
+
+
+
+        Genrator.createService(DriversApi.class).getArchivedOrders(HomeActivty.id).enqueue(new Callback<List<ArchivedOrder>>() {
             @Override
             public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
-
-                adb = new ArchivedOrdersAdb(response.body(), getContext());
-                arclist.setAdapter(adb);
-                arclist.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                for (int i = 0; i < response.body().size(); i++) {
-
-                    totalvalue += response.body().get(i).getTotalAmount();
+                archivedOrders.addAll(response.body());
+                if(archivedOrders.size()==0){
+                    noAchived.setVisibility(View.VISIBLE);
                 }
-
-                total.setText("TOTAL PRICE : " + totalvalue + " SR");
-
             }
 
             @Override
             public void onFailure(Call<List<ArchivedOrder>> call, Throwable t) {
 
+                Toast.makeText(getContext(),t.getMessage().toString(),Toast.LENGTH_SHORT).show();
+
             }
         });
+
+        arclist = (RecyclerView) getActivity().findViewById(R.id.archived_list);
+        adb = new ArchivedOrdersAdb(archivedOrders, getContext());
+        arclist.setAdapter(adb);
+        arclist.setLayoutManager(new LinearLayoutManager(getContext()));
+        for (int i = 0; i < archivedOrders.size(); i++) {
+            totalvalue += archivedOrders.get(i).getTotalAmount();
+        }
+        total.setText("TOTAL : " + totalvalue + " SR");
 
 
 
@@ -98,7 +107,7 @@ public class Archived extends Fragment {
         super.onResume();
 
 
-        Genrator.createService(DriversApi.class).getArchivedOrders(driverID).enqueue(new Callback<List<ArchivedOrder>>() {
+        Genrator.createService(DriversApi.class).getArchivedOrders(HomeActivty.id).enqueue(new Callback<List<ArchivedOrder>>() {
             @Override
             public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
                 totalvalue=0;
@@ -111,7 +120,7 @@ public class Archived extends Fragment {
                     totalvalue += response.body().get(i).getTotalAmount();
                 }
 
-                total.setText("TOTAL PRICE : " + totalvalue + " SR");
+                total.setText("TOTAL : " + totalvalue + " SR");
 
             }
 

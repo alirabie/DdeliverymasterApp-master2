@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,79 +8,113 @@
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#e4e4e4">
+        android:layout_height="fill_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="ORDER#"
-            android:id="@+id/textView5"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:textSize="15dp" />
+            android:background="#e4e4e4">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="PRICE (SR)"
-            android:id="@+id/textView6"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:textSize="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="ORDER#"
+                android:id="@+id/textView5"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="12dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="TIME (MIN)"
-            android:id="@+id/textView7"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:textSize="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="PRICE (SR)"
+                android:id="@+id/textView6"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="TIME (MIN)"
+                android:id="@+id/textView7"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/archived_list"
+            android:padding="10dp">
+
+
+
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-       android:layout_width="match_parent"
-       android:layout_height="300dp"
-       android:id="@+id/archived_list"
-       android:padding="10dp">
-
-
-
-   </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="No Archived Orders"
+        android:id="@+id/no_archived"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:background="#00ffffff" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/ar_total"
-            android:gravity="right"
             android:padding="10dp"
             android:textStyle="bold"
             android:textColor="#000000"
-            android:textSize="13dp" />
+            android:textSize="13dp"
+            android:text="TOTAL : 2555"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/avrg"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="13dp"
+            android:text="AVREGE : 35"
+            android:layout_weight="1" />
+
     </LinearLayout>
 
 
-
-</LinearLayout>
+</FrameLayout>
