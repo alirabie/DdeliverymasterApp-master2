@@ -46,7 +46,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
     String orderId,custmerName,phoneNum;
     RecyclerView itemslist;
     TextView name,id,duration;
-    TextView deleveredbtn,packedbtn,onwaybtn,donebtn,failedbtn,tv_total_price;
+    TextView deleveredbtn,onwaybtn,donebtn,failedbtn,tv_total_price;
 
     private ImageView sms,phone,backbtn;
     private TextView delevered,packed;
@@ -82,38 +82,16 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
         //Packed And Delevered Order Config
 
-        packedbtn=(TextView)findViewById(R.id.order_details_picked);
+
         deleveredbtn=(TextView)findViewById(R.id.order_details_delevered);
-        onwaybtn=(TextView)findViewById(R.id.order_details_way);
         donebtn=(TextView)findViewById(R.id.order_details_done);
         failedbtn=(TextView)findViewById(R.id.order_details_failed_btn);
 
         //Set Buttons Invisible
 
 
-        deleveredbtn.setVisibility(View.INVISIBLE);
-        onwaybtn.setVisibility(View.INVISIBLE);
+
         donebtn.setVisibility(View.INVISIBLE);
-        failedbtn.setVisibility(View.INVISIBLE);
-
-
-
-
-        //Check Order Status to set Button
-        switch (statusId){
-
-            case 6:
-                onwaybtn.setVisibility(View.VISIBLE);
-                break;
-            case 5:
-                deleveredbtn.setVisibility(View.VISIBLE);
-                failedbtn.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                donebtn.setVisibility(View.VISIBLE);
-                break;
-
-        }
 
 
 
@@ -123,32 +101,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
 
 
-        //When Delevered Btn Clicked send Status Id Code
-        onwaybtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"5").enqueue(new Callback<ChangeStautMsg>() {
-                    @Override
-                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
-
-                        Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
-
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
-
-                    }
-                });
-
-                onwaybtn.setVisibility(View.INVISIBLE);
-                deleveredbtn.setVisibility(View.VISIBLE);
-                failedbtn.setVisibility(View.VISIBLE);
-            }
-        });
 
 
 
@@ -159,6 +112,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
                     @Override
                     public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
                         Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
@@ -169,6 +123,8 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
                 failedbtn.setVisibility(View.INVISIBLE);
                 deleveredbtn.setVisibility(View.INVISIBLE);
+                donebtn.setVisibility(View.VISIBLE);
+                donebtn.setText("Failed");
             }
 
         });
@@ -183,6 +139,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
                     public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
 
                         Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
+                        finish();
 
                     }
 
@@ -194,6 +151,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
 
                 deleveredbtn.setVisibility(View.INVISIBLE);
+                failedbtn.setVisibility(View.INVISIBLE);
                 donebtn.setVisibility(View.VISIBLE);
 
 

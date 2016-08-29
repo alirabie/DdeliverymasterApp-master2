@@ -31,4 +31,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'de.hdodenhof:circleimageview:1.2.1'
     compile 'com.google.android.gms:play-services:8.4.0'
+
+
 }

@@ -5,7 +5,17 @@
     tools:context="app.appsmatic.com.driversapp.Fragments.Orders">
 
     <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/itemsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" /> <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -13,6 +23,8 @@
         android:layout_gravity="center"
         android:padding="10dp"
         android:background="#c4c4c4" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 
 </FrameLayout>

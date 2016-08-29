@@ -39,6 +39,10 @@ public class Order {
     @SerializedName("TotalAmount")
     @Expose
     private Float totalAmount;
+    @SerializedName("Confirmed")
+    @Expose
+    private Boolean confirmed;
+
 
 
     /**
@@ -219,6 +223,25 @@ public class Order {
      */
     public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+
+    /**
+     *
+     * @return
+     * The confirmed
+     */
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    /**
+     *
+     * @param confirmed
+     * The Confirmed
+     */
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
 }

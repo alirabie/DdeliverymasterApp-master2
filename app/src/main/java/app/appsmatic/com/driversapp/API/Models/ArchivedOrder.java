@@ -38,7 +38,7 @@ public class ArchivedOrder {
     private String latitude;
     @SerializedName("TotalAmount")
     @Expose
-    private Integer totalAmount;
+    private Float totalAmount;
 
 
     /**
@@ -209,7 +209,7 @@ public class ArchivedOrder {
      * @return
      * The totalAmount
      */
-    public Integer getTotalAmount() {
+    public Float getTotalAmount() {
         return totalAmount;
     }
 
@@ -218,7 +218,7 @@ public class ArchivedOrder {
      * @param totalAmount
      * The TotalAmount
      */
-    public void setTotalAmount(Integer totalAmount) {
+    public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
     }
 }

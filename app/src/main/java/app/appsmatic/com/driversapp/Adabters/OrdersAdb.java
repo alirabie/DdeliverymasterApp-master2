@@ -24,7 +24,9 @@ import java.util.List;
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
+import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.Order;
+import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.MapsActivity;
 import app.appsmatic.com.driversapp.Orders_info;
 import app.appsmatic.com.driversapp.R;
@@ -59,13 +61,16 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
         holder.confirm.setVisibility(View.INVISIBLE);
 
 
+        if(orders.get(position).getConfirmed()){
+            holder.confirmed.setVisibility(View.VISIBLE);
+        }
+
+
+
         //Check order Status To Set button Status
         switch (orders.get(position).getStatusID()){
             case 0 :
                 holder.confirm.setVisibility(View.VISIBLE);
-                break;
-            case 6:
-                holder.confirmed.setVisibility(View.VISIBLE);
                 break;
             case 5:
                 holder.confirmed.setVisibility(View.VISIBLE);
@@ -164,8 +169,17 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
 
 
 
-                                //Send 6 Status
+                                Genrator.createService(DriversApi.class).ConfirmOrder(HomeActivty.id,orders.get(position).getOrderID()).enqueue(new Callback<DriverID>() {
+                                    @Override
+                                    public void onResponse(Call<DriverID> call, Response<DriverID> response) {
+                                        Toast.makeText(context,response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
+                                    }
 
+                                    @Override
+                                    public void onFailure(Call<DriverID> call, Throwable t) {
+
+                                    }
+                                });
 
 
 

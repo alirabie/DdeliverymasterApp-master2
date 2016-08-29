@@ -42,7 +42,9 @@ public interface DriversApi {
     Call<ChangeStautMsg> changeStautMsg(@Field("OrderID") String orderID,@Field("status") String statusID);
 
 
-
+    @FormUrlEncoded
+    @POST("DriverApp/ConfirmOrderPickup")
+    Call<DriverID> ConfirmOrder(@Field("DriverId") String driverId,@Field("OrderId") int orderID );
 
 
 
