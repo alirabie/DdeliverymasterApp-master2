@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/profilepic"
         android:layout_above="@+id/linearLayout3"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/photo_circle" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -37,7 +38,7 @@
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/toggleButton"
+            android:id="@+id/driver_status_profile"
             android:button="@drawable/driverstatusbtn"
             android:layout_marginBottom="10dp"
             android:checked="false"
@@ -67,8 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Ali Rabie"
-                android:id="@+id/textView"
+                android:text="Driver Name"
+                android:id="@+id/pr_driver_name"
                 android:layout_weight="1"
                 android:padding="10dp"
                 android:textStyle="bold"
@@ -105,8 +106,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="010025558888"
-                android:id="@+id/textView3"
+                android:text="Mobile Number"
+                android:id="@+id/pr_driver_phone"
                 android:layout_weight="1"
                 android:padding="10dp"
                 android:textStyle="bold"
@@ -136,8 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Toyota"
-                android:id="@+id/textView4"
+                android:text="VehiclePlateNo"
+                android:id="@+id/pr_driver_car"
                 android:layout_weight="1"
                 android:padding="10dp"
                 android:textStyle="bold"

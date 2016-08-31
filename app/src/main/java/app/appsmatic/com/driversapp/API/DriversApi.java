@@ -1,16 +1,25 @@
 package app.appsmatic.com.driversapp.API;
 
+import java.util.HashMap;
 import java.util.List;
 
 import app.appsmatic.com.driversapp.API.Models.ArchivedOrder;
 import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
+import app.appsmatic.com.driversapp.API.Models.DriverProfile;
+import app.appsmatic.com.driversapp.API.Models.DriverUpdate;
+import app.appsmatic.com.driversapp.API.Models.Msg;
 import app.appsmatic.com.driversapp.API.Models.Order;
 import app.appsmatic.com.driversapp.API.Models.OrderDetail;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * Created by Mido PC on 8/14/2016.
@@ -46,13 +55,15 @@ public interface DriversApi {
     @POST("DriverApp/ConfirmOrderPickup")
     Call<DriverID> ConfirmOrder(@Field("DriverId") String driverId,@Field("OrderId") int orderID );
 
+    @FormUrlEncoded
+    @POST("DriverApp/profile")
+    Call<DriverProfile> getProfile(@Field("UserID") String userID);
 
 
 
-
-
-
-
+    @FormUrlEncoded
+    @POST("DriverApp/update")
+    Call<ResponseBody> updateDriverinfo(@Field("Driver") String driver);
 
 
 }

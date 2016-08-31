@@ -7,4 +7,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_change_info">Change_info</string>
 </resources>

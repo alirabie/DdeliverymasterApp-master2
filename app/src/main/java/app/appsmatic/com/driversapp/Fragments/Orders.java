@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
@@ -60,31 +61,35 @@ public class Orders extends Fragment {
         orders=new ArrayList<Order>();
         noOrdersLable=(TextView)getActivity().findViewById(R.id.no_orders);
         noOrdersLable.setVisibility(View.INVISIBLE);
-        if (orders.size()==0){
-            noOrdersLable.setVisibility(View.VISIBLE);
-        }
 
 
+        adb = new OrdersAdb(orders, getContext());
         Genrator.createService(DriversApi.class).getOrders(HomeActivty.id).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if(!orders.isEmpty()){
+                    orders.clear();
+                }
                 orders.addAll(response.body());
+                if (orders.isEmpty()) {
+                    noOrdersLable.setVisibility(View.VISIBLE);
+                }
+
+                //Setup Orders List
+                ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
+                ordersList.setAdapter(adb);
+                ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
             }
 
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
 
-                Toast.makeText(getContext(),t.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage().toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
 
 
-        //Setup Orders List
-        ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
-        adb=new OrdersAdb(orders,getContext());
-        ordersList.setAdapter(adb);
-        ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
 
@@ -97,27 +102,42 @@ public class Orders extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        adb = new OrdersAdb(orders,getActivity());
+        if(!orders.isEmpty()){
+            orders.clear();
+        }
         Genrator.createService(DriversApi.class).getOrders(HomeActivty.id).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+
+                if (response.body().isEmpty()) {
+                    noOrdersLable.setVisibility(View.VISIBLE);
+                }
+
                 orders.addAll(response.body());
+
+
+
+
             }
 
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
 
-                Toast.makeText(getContext(),t.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage().toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
 
 
-
         //Setup Orders List
         ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
-        adb=new OrdersAdb(orders,getContext());
         ordersList.setAdapter(adb);
         ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+
+
 
     }
 }
