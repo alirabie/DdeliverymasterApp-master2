@@ -39,10 +39,9 @@ import retrofit2.Response;
 
 public class Orders extends Fragment {
 
-
     private RecyclerView ordersList;
     private OrdersAdb adb;
-    private List<Order>orders;
+    public static List<Order>orders;
     private TextView noOrdersLable;
 
 
@@ -57,38 +56,36 @@ public class Orders extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         orders=new ArrayList<Order>();
         noOrdersLable=(TextView)getActivity().findViewById(R.id.no_orders);
         noOrdersLable.setVisibility(View.INVISIBLE);
 
 
-        adb = new OrdersAdb(orders, getContext());
+
         Genrator.createService(DriversApi.class).getOrders(HomeActivty.id).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                if(!orders.isEmpty()){
-                    orders.clear();
-                }
+
                 orders.addAll(response.body());
                 if (orders.isEmpty()) {
                     noOrdersLable.setVisibility(View.VISIBLE);
                 }
 
                 //Setup Orders List
+                adb = new OrdersAdb(orders, getActivity());
                 ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
                 ordersList.setAdapter(adb);
-                ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
+                ordersList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
             }
 
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
 
-                Toast.makeText(getContext(), t.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage() + "", Toast.LENGTH_SHORT).show();
 
             }
         });
-
 
 
 
@@ -102,40 +99,6 @@ public class Orders extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        adb = new OrdersAdb(orders,getActivity());
-        if(!orders.isEmpty()){
-            orders.clear();
-        }
-        Genrator.createService(DriversApi.class).getOrders(HomeActivty.id).enqueue(new Callback<List<Order>>() {
-            @Override
-            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-
-                if (response.body().isEmpty()) {
-                    noOrdersLable.setVisibility(View.VISIBLE);
-                }
-
-                orders.addAll(response.body());
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Order>> call, Throwable t) {
-
-                Toast.makeText(getContext(), t.getMessage().toString(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
-        //Setup Orders List
-        ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
-        ordersList.setAdapter(adb);
-        ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
 
 
 

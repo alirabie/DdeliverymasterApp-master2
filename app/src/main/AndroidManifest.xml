@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeActivty"
             android:label="@string/title_activity_home_activty"
@@ -51,10 +51,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Change_info"
-            android:label="@string/title_activity_change_info"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ChangeDriverName"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity android:name=".ChangeDriverNumber"
+            android:theme="@style/Theme.AppCompat.Dialog">
+
+        </activity>
     </application>
 
 </manifest>

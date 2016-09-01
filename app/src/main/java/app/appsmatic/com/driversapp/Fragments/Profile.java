@@ -28,6 +28,8 @@ import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.DriverProfile;
 import app.appsmatic.com.driversapp.API.Models.Msg;
+import app.appsmatic.com.driversapp.ChangeDriverName;
+import app.appsmatic.com.driversapp.ChangeDriverNumber;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,10 +44,11 @@ public class Profile extends Fragment {
     CircleImageView profileImg;
     private TextView name,phone,car;
     private ToggleButton status;
-    public DriverProfile driverProfiledata;
+    public static DriverProfile driverProfiledata;
     public HashMap<String,Object> hash =new HashMap<>();
     public Gson gson;
     public  String dataGson;
+    public TextView change_name_btn,change_phone_btn;
 
 
 
@@ -72,11 +75,31 @@ public class Profile extends Fragment {
         car=(TextView)getActivity().findViewById(R.id.pr_driver_car);
         profileImg=(CircleImageView)getActivity().findViewById(R.id.profilepic);
         status=(ToggleButton)getActivity().findViewById(R.id.driver_status_profile);
+        change_name_btn=(TextView)getActivity().findViewById(R.id.changedname_lbl);
+        change_phone_btn=(TextView)getActivity().findViewById(R.id.changednumlbl);
         profileImg.setBorderColor(R.color.colorPrimary);
         profileImg.setBorderWidth(3);
         driverProfiledata=new DriverProfile();
         gson=new Gson();
         dataGson=gson.toJson(hash);
+
+
+
+
+        change_name_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ChangeDriverName.class));
+            }
+        });
+
+
+        change_phone_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ChangeDriverNumber.class));
+            }
+        });
 
 
 
@@ -158,10 +181,11 @@ public class Profile extends Fragment {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                            if (loading.isShowing())
+                            if (response.isSuccess()){
                                 loading.dismiss();
+                                Toast.makeText(getContext(),"ON LINE MODE",Toast.LENGTH_SHORT).show();
+                            }
 
-                            Toast.makeText(getContext(),"ON LINE MODE",Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -209,10 +233,10 @@ public class Profile extends Fragment {
                     Genrator.createService(DriversApi.class).updateDriverinfo(dataGson).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (loading2.isShowing())
+                            if (response.isSuccess()) {
                                 loading2.dismiss();
-                                Toast.makeText(getContext(),"OFF LINE MODE",Toast.LENGTH_SHORT).show();
-
+                                Toast.makeText(getContext(), "OFF LINE MODE", Toast.LENGTH_SHORT).show();
+                            }
 
                         }
 
