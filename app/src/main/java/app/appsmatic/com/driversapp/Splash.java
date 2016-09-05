@@ -1,5 +1,8 @@
 package app.appsmatic.com.driversapp;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -16,6 +19,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import app.appsmatic.com.driversapp.API.DriversApi;
+import app.appsmatic.com.driversapp.API.Genrator;
+import app.appsmatic.com.driversapp.API.Models.DriverID;
+import app.appsmatic.com.driversapp.GPS.SaveSharedPreference;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Splash extends AppCompatActivity {
 
@@ -50,10 +61,53 @@ public class Splash extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    //Finally Go to Login Activity
-                    Intent i = new Intent(Splash.this, LoginActivity.class);
-                    startActivity(i);
-                    finish();
+                        //Check Saved Username in preference if is empty transfer to login activity
+                    if(SaveSharedPreference.getUserName(getApplicationContext()).length() == 0)
+                    {
+                        Intent i = new Intent(Splash.this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                    else
+                    {
+                        //if saved username in prefs is not empty use it to login
+                        Genrator.createService(DriversApi.class).login(SaveSharedPreference.getUserName(getApplicationContext())+"",SaveSharedPreference.getUserPassword(getApplicationContext())+"")
+                                .enqueue(new Callback<DriverID>() {
+                                    @Override
+                                    public void onResponse(Call<DriverID> call, Response<DriverID> response) {
+
+                                        if(response.body().getMessage()==null){
+
+                                            Splash.this.finish();
+                                            startActivity(new Intent(getApplicationContext(), HomeActivty.class).putExtra("DriverID", response.body().getDriverid()));
+
+                                        }else {
+
+                                            new AlertDialog.Builder(Splash.this)
+                                                    .setTitle("Authentication Error")
+                                                    .setMessage(response.body().getMessage()+"")
+                                                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                            //if user in prefs not valid go to login activity again
+                                                           startActivity(new Intent(Splash.this,LoginActivity.class));
+                                                        }
+                                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<DriverID> call, Throwable t) {
+
+                                    }
+                                });
+
+
+
+                    }
+
                 }
             }
         };

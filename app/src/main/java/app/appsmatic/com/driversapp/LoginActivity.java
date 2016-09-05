@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
+import app.appsmatic.com.driversapp.GPS.SaveSharedPreference;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
+//Check if GPS is on or not
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -79,11 +80,14 @@ public class LoginActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         // window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
+
+
         user = (EditText) findViewById(R.id.user);
         pass = (EditText) findViewById(R.id.pass);
         logbtn = (ImageView) findViewById(R.id.lognbutton);
 
 
+        //Login Button
         logbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                             LoginActivity.this.finish();
                             startActivity(new Intent(getApplicationContext(), HomeActivty.class).putExtra("DriverID", response.body().getDriverid()));
 
+                            //Save UserName And Password in Shared Prefs
+                            SaveSharedPreference.setUserName(getApplicationContext(),username,password);
                         } else {
 
 

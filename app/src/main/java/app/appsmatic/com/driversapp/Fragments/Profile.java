@@ -30,7 +30,9 @@ import app.appsmatic.com.driversapp.API.Models.DriverProfile;
 import app.appsmatic.com.driversapp.API.Models.Msg;
 import app.appsmatic.com.driversapp.ChangeDriverName;
 import app.appsmatic.com.driversapp.ChangeDriverNumber;
+import app.appsmatic.com.driversapp.GPS.SaveSharedPreference;
 import app.appsmatic.com.driversapp.HomeActivty;
+import app.appsmatic.com.driversapp.LoginActivity;
 import app.appsmatic.com.driversapp.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
@@ -48,7 +50,7 @@ public class Profile extends Fragment {
     public HashMap<String,Object> hash =new HashMap<>();
     public Gson gson;
     public  String dataGson;
-    public TextView change_name_btn,change_phone_btn;
+    public TextView change_name_btn,change_phone_btn,signoutBtn;
 
 
 
@@ -77,6 +79,7 @@ public class Profile extends Fragment {
         status=(ToggleButton)getActivity().findViewById(R.id.driver_status_profile);
         change_name_btn=(TextView)getActivity().findViewById(R.id.changedname_lbl);
         change_phone_btn=(TextView)getActivity().findViewById(R.id.changednumlbl);
+        signoutBtn=(TextView)getActivity().findViewById(R.id.signoutBtn);
         profileImg.setBorderColor(R.color.colorPrimary);
         profileImg.setBorderWidth(3);
         driverProfiledata=new DriverProfile();
@@ -217,7 +220,7 @@ public class Profile extends Fragment {
                     hash.put("FullName", driverProfiledata.getFullName());
                     hash.put("Address",driverProfiledata.getAddress());
                     hash.put("VehiclePlateNo",driverProfiledata.getVehiclePlateNo());
-                    hash.put("MobileNo","0482233222");
+                    hash.put("MobileNo",driverProfiledata.getMobileNo());
                     hash.put("PersonalPhoto",driverProfiledata.getPersonalPhoto());
                     hash.put("BranchCode",driverProfiledata.getBranchCode());
                     hash.put("Available",false);
@@ -260,12 +263,23 @@ public class Profile extends Fragment {
 
 
 
+        //SignOut btn
+
+        signoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Clear Login data from prefs
+                SaveSharedPreference.clearUserName(getContext());
+                //Start Login activity
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                getActivity().finish();
 
 
 
 
-
-
+            }
+        });
 
 
 
