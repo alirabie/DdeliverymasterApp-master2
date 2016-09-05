@@ -1,29 +1,20 @@
 package app.appsmatic.com.driversapp;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PixelFormat;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
-import app.appsmatic.com.driversapp.GPS.SaveSharedPreference;
+import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,6 +91,16 @@ public class Splash extends AppCompatActivity {
 
                                     @Override
                                     public void onFailure(Call<DriverID> call, Throwable t) {
+
+                                        new AlertDialog.Builder(Splash.this)
+                                                .setTitle("Connection Error")
+                                                .setMessage(t.getMessage())
+                                                .setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                }).setIcon(android.R.drawable.ic_dialog_alert).show();
 
                                     }
                                 });

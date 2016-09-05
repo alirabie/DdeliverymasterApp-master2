@@ -1,4 +1,4 @@
-package app.appsmatic.com.driversapp.GPS;
+package app.appsmatic.com.driversapp.SharedPref;
 
 import android.content.Context;
 import android.content.SharedPreferences;

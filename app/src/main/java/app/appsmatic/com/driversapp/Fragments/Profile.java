@@ -8,29 +8,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 
-import java.io.StringReader;
 import java.util.HashMap;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
-import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.DriverProfile;
-import app.appsmatic.com.driversapp.API.Models.Msg;
 import app.appsmatic.com.driversapp.ChangeDriverName;
 import app.appsmatic.com.driversapp.ChangeDriverNumber;
-import app.appsmatic.com.driversapp.GPS.SaveSharedPreference;
+import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.LoginActivity;
 import app.appsmatic.com.driversapp.R;
