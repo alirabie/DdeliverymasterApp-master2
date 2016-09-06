@@ -2,6 +2,7 @@ package app.appsmatic.com.driversapp.Adabters;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,13 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.Order;
+import app.appsmatic.com.driversapp.GPS.GPSTracker;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.MapsActivity;
 import app.appsmatic.com.driversapp.Orders_info;
@@ -41,7 +45,7 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
 
      List<Order>orders=new ArrayList<>();
      Context context;
-     int statusId=0;
+
 
     public OrdersAdb(List<Order> orders, Context context) {
         this.orders = orders;
@@ -145,16 +149,41 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
         holder.map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                GPSTracker gpsTracker=new GPSTracker(context);
+                String uri = "http://maps.google.com/maps?f=d&hl=en&saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+orders.get(position).getLatitude()+","+orders.get(position).getLongtitude();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+                try
+                {
+                    context.startActivity(intent);
+                }
+                catch(ActivityNotFoundException ex)
+                {
+                    try
+                    {
+                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        context.startActivity(unrestrictedIntent);
+                    }
+                    catch(ActivityNotFoundException innerEx)
+                    {
+                        Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+/*
                 context.startActivity(new Intent(context, MapsActivity.class)
                         .putExtra("custname",orders.get(position).getCustomer())
                         .putExtra("lat", orders.get(position).getLatitude())
                         .putExtra("lng", orders.get(position).getLongtitude()));
+
+                        */
             }
         });
 
 
 
-        //When confirm Button is clicked
+        //When confirm Button is clicked Show dialog to ensure
         
         holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,20 +197,19 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
                             public void onClick(DialogInterface dialog, int id) {
 
 
-
-                                Genrator.createService(DriversApi.class).ConfirmOrder(HomeActivty.id,orders.get(position).getOrderID()).enqueue(new Callback<DriverID>() {
+                                Genrator.createService(DriversApi.class).ConfirmOrder(HomeActivty.id, orders.get(position).getOrderID()).enqueue(new Callback<DriverID>() {
                                     @Override
                                     public void onResponse(Call<DriverID> call, Response<DriverID> response) {
-                                        Toast.makeText(context,response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override
                                     public void onFailure(Call<DriverID> call, Throwable t) {
 
+                                        Toast.makeText(context, "Order Confirmation Error " + t.getMessage() + "", Toast.LENGTH_SHORT).show();
+
                                     }
                                 });
-
-
 
 
                                 holder.confirm.setVisibility(View.INVISIBLE);
@@ -196,12 +224,6 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
                         }).setIcon(android.R.drawable.alert_light_frame);
                 AlertDialog alert = builder.create();
                 alert.show();
-
-
-
-
-
-
 
 
             }
@@ -220,10 +242,33 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
                         .putExtra("statusID", orders.get(position).getStatusID())
                         .putExtra("custname", orders.get(position).getCustomer() + "")
                         .putExtra("orderId", orders.get(position).getOrderID().toString())
+                        .putExtra("ordertime",orders.get(position).getTimeToRecieve())
                         .putExtra("lat", orders.get(position).getLatitude())
                         .putExtra("lng", orders.get(position).getLongtitude()));
             }
         });
+
+
+
+
+
+        //Set Time to Order in order List item
+
+        if(orders.get(position).getTimeToRecieve()==null){
+
+            holder.duration.setText("Not Set");
+
+        }else{
+
+            String ackwardDate=orders.get(position).getTimeToRecieve();
+            Calendar calendar = Calendar.getInstance();
+            String ackwardRipOff = ackwardDate.replace("/Date(", "").replace(")/", "");
+            Long timeInMillis = Long.valueOf(ackwardRipOff);
+            calendar.setTimeInMillis(timeInMillis);
+            holder.duration.setText(calendar.getTime().toLocaleString());
+
+        }
+
 
 
 

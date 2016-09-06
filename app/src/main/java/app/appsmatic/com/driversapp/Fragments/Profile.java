@@ -1,6 +1,7 @@
 package app.appsmatic.com.driversapp.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,8 @@ import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
@@ -210,7 +213,7 @@ public class Profile extends Fragment {
 
 
 
-                    hash.put("UserID",driverProfiledata.getUserID());
+                    hash.put("UserID", driverProfiledata.getUserID());
                     hash.put("DriverID", driverProfiledata.getDriverID());
                     hash.put("FullName", driverProfiledata.getFullName());
                     hash.put("Address",driverProfiledata.getAddress());
@@ -225,7 +228,8 @@ public class Profile extends Fragment {
 
 
 
-                    Log.e("DATAJSON", dataGson);
+                   // Log.e("DATAJSON", dataGson);
+
 
 
                     Genrator.createService(DriversApi.class).updateDriverinfo(dataGson).enqueue(new Callback<ResponseBody>() {
@@ -275,7 +279,6 @@ public class Profile extends Fragment {
 
             }
         });
-
 
 
 

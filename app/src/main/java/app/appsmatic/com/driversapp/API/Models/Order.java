@@ -18,6 +18,9 @@ public class Order {
     @SerializedName("OrderDate")
     @Expose
     private String orderDate;
+    @SerializedName("TimeToRecieve")
+    @Expose
+    private String timeToRecieve;
     @SerializedName("OrderID")
     @Expose
     private Integer orderID;
@@ -95,6 +98,29 @@ public class Order {
      * @param orderDate
      * The OrderDate
      */
+
+
+    /**
+     *
+     * @return
+     * The timeToRecieve
+     */
+    public String getTimeToRecieve() {
+        return timeToRecieve;
+    }
+
+    /**
+     *
+     * @param timeToRecieve
+     * The TimeToRecieve
+     */
+    public void setTimeToRecieve(String timeToRecieve) {
+        this.timeToRecieve = timeToRecieve;
+    }
+
+
+
+
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }

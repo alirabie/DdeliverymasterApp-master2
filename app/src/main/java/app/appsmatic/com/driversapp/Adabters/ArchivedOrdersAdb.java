@@ -42,7 +42,7 @@ public class ArchivedOrdersAdb extends RecyclerView.Adapter<ArchivedOrdersAdb.vh
 
         holder.orderid.setText(archivedOrders.get(position).getOrderID()+"");
         holder.price.setText(archivedOrders.get(position).getTotalAmount()+"");
-        holder.duration.setText("20");
+
 
 
 
@@ -72,7 +72,7 @@ public class ArchivedOrdersAdb extends RecyclerView.Adapter<ArchivedOrdersAdb.vh
             super(itemView);
             orderid=(TextView)itemView.findViewById(R.id.ar_order);
             price=(TextView)itemView.findViewById(R.id.ar_price);
-            duration=(TextView)itemView.findViewById(R.id.ar_time);
+
 
 
         }

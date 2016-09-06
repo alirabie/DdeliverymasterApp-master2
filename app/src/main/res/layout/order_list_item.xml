@@ -49,31 +49,8 @@
     <ImageView
         android:layout_width="40dp"
         android:layout_height="30dp"
-        android:id="@+id/callbtn"
-        android:background="@drawable/buttons_orange"
-        android:src="@drawable/icon_call_button"
-        android:padding="11dp"
-        android:layout_marginTop="9dp"
-        android:layout_below="@+id/tv_duration"
-        android:layout_alignRight="@+id/statusbtn"
-        android:layout_alignEnd="@+id/statusbtn" />
-
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="30dp"
-        android:id="@+id/smsbtn"
-        android:src="@drawable/icon_ms_button"
-        android:background="@drawable/buttons_orange"
-        android:padding="11dp"
-        android:layout_alignTop="@+id/mapbtn"
-        android:layout_alignLeft="@+id/statusbtnok"
-        android:layout_alignStart="@+id/statusbtnok" />
-
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="30dp"
         android:id="@+id/mapbtn"
-        android:padding="11dp"
+        android:padding="8dp"
         android:background="@drawable/buttons_orange"
         android:src="@drawable/icon_map_button"
         android:layout_alignTop="@+id/callbtn"
@@ -81,6 +58,29 @@
         android:layout_toEndOf="@+id/smsbtn"
         android:layout_marginLeft="6dp"
         android:layout_marginStart="6dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:id="@+id/callbtn"
+        android:background="@drawable/buttons_orange"
+        android:src="@drawable/icon_call_button"
+        android:layout_marginTop="9dp"
+        android:layout_below="@+id/tv_duration"
+        android:layout_alignRight="@+id/statusbtn"
+        android:layout_alignEnd="@+id/statusbtn"
+        android:padding="8dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:id="@+id/smsbtn"
+        android:src="@drawable/icon_ms_button"
+        android:background="@drawable/buttons_orange"
+        android:padding="8dp"
+        android:layout_alignTop="@+id/mapbtn"
+        android:layout_alignLeft="@+id/statusbtnok"
+        android:layout_alignStart="@+id/statusbtnok" />
 
     <TextView
         android:layout_width="wrap_content"

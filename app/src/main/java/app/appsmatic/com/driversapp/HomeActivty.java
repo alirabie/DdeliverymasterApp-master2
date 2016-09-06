@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,10 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Handler;
 
 import app.appsmatic.com.driversapp.Adabters.VeiwpagerAdb;
@@ -31,7 +36,7 @@ public class HomeActivty extends AppCompatActivity {
     static double y;
     private int[] tabIcons = {R.drawable.orders_tab_icon,R.drawable.archived_tab_icon,R.drawable.profile_tab_icon};
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Activity Animated Transition
@@ -43,12 +48,11 @@ public class HomeActivty extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         //Check Os Ver For Set Status Bar
-        if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
-        //Invoking Check Gps Status method
-        checkGpsStatus();
+
 
 
         //Get Driver Id
@@ -167,6 +171,15 @@ public class HomeActivty extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+
+
+
+
 
 
 }

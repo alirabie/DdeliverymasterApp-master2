@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Calendar;
 import java.util.List;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
@@ -43,7 +44,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
     Float lng;
     int statusId;
     Float totalprice;
-    String orderId,custmerName,phoneNum;
+    String orderId,custmerName,phoneNum,time;
     RecyclerView itemslist;
     TextView name,id,duration;
     TextView deleveredbtn,onwaybtn,donebtn,failedbtn,tv_total_price;
@@ -77,6 +78,8 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
         phoneNum=extras.getString("phone");
         statusId=extras.getInt("statusID");
         totalprice=extras.getFloat("totalPrice");
+        time=extras.getString("ordertime");
+
 
 
 
@@ -108,10 +111,10 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
         failedbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"4").enqueue(new Callback<ChangeStautMsg>() {
+                Genrator.createService(DriversApi.class).changeStautMsg(orderId, "4").enqueue(new Callback<ChangeStautMsg>() {
                     @Override
                     public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
-                        Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
@@ -182,17 +185,17 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public void onResponse(Call<List<OrderDetail>> call, Response<List<OrderDetail>> response) {
 
-                itemslist=(RecyclerView)findViewById(R.id.item_order_list);
+                itemslist = (RecyclerView) findViewById(R.id.item_order_list);
                 itemslist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 itemslist.setAdapter(new Items_Adb(getApplicationContext(), response.body()));
 
-                name=(TextView)findViewById(R.id.tv_info_cust_name);
-                id=(TextView)findViewById(R.id.tv_orser_info_id);
-                tv_total_price=(TextView)findViewById(R.id.order_details_tv_totalprice);
+                name = (TextView) findViewById(R.id.tv_info_cust_name);
+                id = (TextView) findViewById(R.id.tv_orser_info_id);
+                tv_total_price = (TextView) findViewById(R.id.order_details_tv_totalprice);
 
-                id.setText("Order# "+orderId);
+                id.setText("Order# " + orderId);
                 name.setText(custmerName);
-                tv_total_price.setText("Total Price : "+totalprice+" SR");
+                tv_total_price.setText("Total Price : " + totalprice + " SR");
 
             }
 
@@ -254,6 +257,30 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
             }
         });
 
+
+
+
+
+
+
+
+        //Set Time to Order in orders info
+        duration=(TextView)findViewById(R.id.timetodlver);
+
+        if(time==null){
+
+            duration.setText("Not Set");
+
+        }else{
+
+            String ackwardDate=time;
+            Calendar calendar = Calendar.getInstance();
+            String ackwardRipOff = ackwardDate.replace("/Date(", "").replace(")/", "");
+            Long timeInMillis = Long.valueOf(ackwardRipOff);
+            calendar.setTimeInMillis(timeInMillis);
+            duration.setText(calendar.getTime().toLocaleString());
+
+        }
 
 
 
