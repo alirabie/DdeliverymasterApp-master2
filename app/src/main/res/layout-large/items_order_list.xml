@@ -7,58 +7,113 @@
     android:id="@+id/relativeLayout2"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:gravity="center">
 
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="ITEM"
-        android:id="@+id/item"
-        android:padding="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:gravity="center"
-        android:layout_weight="1" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/item"
+            android:padding="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="برجر كبير "
+            android:layout_weight="2" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/price"
+            android:padding="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/total"
+            android:layout_toStartOf="@+id/total"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="1.25"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/qty"
+            android:padding="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/price"
+            android:layout_toStartOf="@+id/price"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="2"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/total"
+            android:padding="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:text="100"
+            android:autoText="false"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="PRICE"
-        android:id="@+id/price"
-        android:padding="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/total"
-        android:layout_toStartOf="@+id/total"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ADDITIONS"
+        android:id="@+id/textView"
+        android:padding="5dp"
+        android:textColor="#be0000"
         android:gravity="center"
-        android:layout_weight="1" />
-
-    <TextView
+        android:textSize="14dp"
+        android:background="#d9d9d9" />
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="QTY"
-        android:id="@+id/qty"
-        android:padding="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/price"
-        android:layout_toStartOf="@+id/price"
-        android:gravity="center"
-        android:layout_weight="1" />
+        android:id="@+id/addslist">
+
+    </android.support.v7.widget.RecyclerView>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="TOTAL"
-        android:id="@+id/total"
-        android:padding="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:text="No Additions"
+        android:id="@+id/add_empty"
+        android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:layout_weight="1" />
+        android:padding="10dp"
+        android:textSize="12dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="center"
+        android:background="#000000"
+        android:id="@+id/textView123"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+
+
+
 </LinearLayout>

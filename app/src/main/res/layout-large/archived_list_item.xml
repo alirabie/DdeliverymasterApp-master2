@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:padding="10dp"
-        android:textSize="25dp" />
+        android:textSize="18dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -25,6 +25,29 @@
         android:layout_weight="1"
         android:gravity="center"
         android:padding="10dp"
-        android:textSize="25dp" />
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="time"
+        android:id="@+id/ar_time"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="date"
+        android:id="@+id/ar_date"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:textColor="#ff0000" />
 
 </LinearLayout>

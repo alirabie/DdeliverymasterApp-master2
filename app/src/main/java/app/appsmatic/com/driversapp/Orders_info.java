@@ -2,6 +2,9 @@ package app.appsmatic.com.driversapp;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -31,8 +34,10 @@ import java.util.List;
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
+import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.OrderDetail;
 import app.appsmatic.com.driversapp.Adabters.Items_Adb;
+import app.appsmatic.com.driversapp.GPS.GPSTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,7 +54,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
     TextView name,id,duration;
     TextView deleveredbtn,onwaybtn,donebtn,failedbtn,tv_total_price;
 
-    private ImageView sms,phone,backbtn;
+    private ImageView sms,phone,backbtn,mapBtn;
     private TextView delevered,packed;
 
 
@@ -67,7 +72,6 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
                 finish();
             }
         });
-
 
         //Receive Data from Orders
         Bundle extras = getIntent().getExtras();
@@ -92,8 +96,6 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
         //Set Buttons Invisible
 
-
-
         donebtn.setVisibility(View.INVISIBLE);
 
 
@@ -108,54 +110,98 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
 
 
+        //Failed Button
+
         failedbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Genrator.createService(DriversApi.class).changeStautMsg(orderId, "4").enqueue(new Callback<ChangeStautMsg>() {
-                    @Override
-                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
-                        Toast.makeText(getApplicationContext(), response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
 
-                    @Override
-                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
 
-                    }
-                });
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Orders_info.this);
+                builder.setMessage("Are you Sure ??")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                failedbtn.setVisibility(View.INVISIBLE);
-                deleveredbtn.setVisibility(View.INVISIBLE);
-                donebtn.setVisibility(View.VISIBLE);
-                donebtn.setText("Failed");
+                                Genrator.createService(DriversApi.class).changeStautMsg(orderId, "4").enqueue(new Callback<ChangeStautMsg>() {
+                                    @Override
+                                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
+                                        Toast.makeText(getApplicationContext(), response.body().getMessage() + "Order deliver Failed !!", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
+
+                                        Toast.makeText(getApplicationContext(),t.getMessage()+"", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+
+                                failedbtn.setVisibility(View.INVISIBLE);
+                                deleveredbtn.setVisibility(View.INVISIBLE);
+                                donebtn.setVisibility(View.VISIBLE);
+                                donebtn.setText("Failed");
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+
+                            }
+                        }).setIcon(android.R.drawable.alert_light_frame);
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
             }
 
         });
 
 
+
+        //Delivered Button
         deleveredbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Genrator.createService(DriversApi.class).changeStautMsg(orderId,"3").enqueue(new Callback<ChangeStautMsg>() {
-                    @Override
-                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Orders_info.this);
+                builder.setMessage("Are you Sure ??")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                        Toast.makeText(getApplicationContext(),response.body().getMessage()+"",Toast.LENGTH_SHORT).show();
-                        finish();
+                                Genrator.createService(DriversApi.class).changeStautMsg(orderId, "3").enqueue(new Callback<ChangeStautMsg>() {
+                                    @Override
+                                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
 
-                    }
+                                        Toast.makeText(getApplicationContext(), response.body().getMessage() + " Order has been Delivered Successfully", Toast.LENGTH_SHORT).show();
+                                        finish();
 
-                    @Override
-                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
+                                    }
 
-                    }
-                });
+                                    @Override
+                                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
+
+                                        Toast.makeText(getApplicationContext(),t.getMessage()+"",Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
 
 
-                deleveredbtn.setVisibility(View.INVISIBLE);
-                failedbtn.setVisibility(View.INVISIBLE);
-                donebtn.setVisibility(View.VISIBLE);
+                                deleveredbtn.setVisibility(View.INVISIBLE);
+                                failedbtn.setVisibility(View.INVISIBLE);
+                                donebtn.setVisibility(View.VISIBLE);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+
+                            }
+                        }).setIcon(android.R.drawable.alert_light_frame);
+                AlertDialog alert = builder.create();
+                alert.show();
 
 
             }
@@ -181,6 +227,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
 
 
+        // Order Items List
         Genrator.createService(DriversApi.class).getOrderDetails(orderId).enqueue(new Callback<List<OrderDetail>>() {
             @Override
             public void onResponse(Call<List<OrderDetail>> call, Response<List<OrderDetail>> response) {
@@ -188,7 +235,6 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
                 itemslist = (RecyclerView) findViewById(R.id.item_order_list);
                 itemslist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 itemslist.setAdapter(new Items_Adb(getApplicationContext(), response.body()));
-
                 name = (TextView) findViewById(R.id.tv_info_cust_name);
                 id = (TextView) findViewById(R.id.tv_orser_info_id);
                 tv_total_price = (TextView) findViewById(R.id.order_details_tv_totalprice);
@@ -202,6 +248,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public void onFailure(Call<List<OrderDetail>> call, Throwable t) {
 
+                Toast.makeText(getApplicationContext(),t.getMessage()+"",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -213,7 +260,38 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public void onClick(View v) {
 
-               startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNum)));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNum)));
+
+            }
+        });
+
+
+
+        //Map Button
+        mapBtn=(ImageView)findViewById(R.id.order_details_MAP_btn);
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                GPSTracker gpsTracker=new GPSTracker(getApplicationContext());
+                String uri = "http://maps.google.com/maps?f=d&hl=en&saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+lat+","+lng;
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+                try
+                {
+                   startActivity(intent);
+                }
+                catch(ActivityNotFoundException ex)
+                {
+                    try
+                    {
+                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        startActivity(unrestrictedIntent);
+                    }
+                    catch(ActivityNotFoundException innerEx)
+                    {
+                        Toast.makeText(getApplicationContext(), "Please install a maps application", Toast.LENGTH_LONG).show();
+                    }
+                }
 
             }
         });

@@ -115,23 +115,22 @@ public class Profile extends Fragment {
         mProgressDialog.show();
 
 
-        Genrator.createService(DriversApi.class).getProfile(HomeActivty.id).enqueue(new Callback<DriverProfile>() {
+        Genrator.createService(DriversApi.class).getProfile("234e5a57-263a-4d82-be76-22d598882c2b").enqueue(new Callback<DriverProfile>() {
             @Override
             public void onResponse(Call<DriverProfile> call, Response<DriverProfile> response) {
                 if (mProgressDialog.isShowing())
                     mProgressDialog.dismiss();
 
-                driverProfiledata = response.body();
-
-
-                name.setText(response.body().getFullName() + "");
-                phone.setText(response.body().getMobileNo() + "");
-                car.setText(response.body().getVehiclePlateNo() + "");
-                status.setChecked(response.body().getAvailable());
-
-                byte[] decodedString = Base64.decode(response.body().getPersonalPhoto(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                profileImg.setImageBitmap(decodedByte);
+                if (response.isSuccess()) {
+                    driverProfiledata = response.body();
+                    name.setText(response.body().getFullName() + " ");
+                    phone.setText(response.body().getMobileNo() + " ");
+                    car.setText(response.body().getVehiclePlateNo() + " ");
+                    status.setChecked(response.body().getAvailable());
+                    byte[] decodedString = Base64.decode(response.body().getPersonalPhoto(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    profileImg.setImageBitmap(decodedByte);
+                }
 
             }
 
@@ -148,7 +147,7 @@ public class Profile extends Fragment {
         status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(status.isChecked()){
+                if (status.isChecked()) {
 
                     //Loading Dialog
                     final ProgressDialog loading = new ProgressDialog(getContext());
@@ -159,20 +158,18 @@ public class Profile extends Fragment {
                     loading.show();
 
 
-
-                    hash.put("UserID",driverProfiledata.getUserID());
+                    hash.put("UserID", driverProfiledata.getUserID());
                     hash.put("DriverID", driverProfiledata.getDriverID());
                     hash.put("FullName", driverProfiledata.getFullName());
-                    hash.put("Address",driverProfiledata.getAddress());
-                    hash.put("VehiclePlateNo",driverProfiledata.getVehiclePlateNo());
-                    hash.put("MobileNo",driverProfiledata.getMobileNo());
-                    hash.put("PersonalPhoto",driverProfiledata.getPersonalPhoto());
-                    hash.put("BranchCode",driverProfiledata.getBranchCode());
-                    hash.put("Available",true);
-                    hash.put("ObjectState",driverProfiledata.getObjectState());
-                    gson=new Gson();
-                    dataGson=gson.toJson(hash);
-
+                    hash.put("Address", driverProfiledata.getAddress());
+                    hash.put("VehiclePlateNo", driverProfiledata.getVehiclePlateNo());
+                    hash.put("MobileNo", driverProfiledata.getMobileNo());
+                    hash.put("PersonalPhoto", driverProfiledata.getPersonalPhoto());
+                    hash.put("BranchCode", driverProfiledata.getBranchCode());
+                    hash.put("Available", true);
+                    hash.put("ObjectState", driverProfiledata.getObjectState());
+                    gson = new Gson();
+                    dataGson = gson.toJson(hash);
 
 
                     Log.e("DATAJSON", dataGson);
@@ -182,9 +179,9 @@ public class Profile extends Fragment {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                            if (response.isSuccess()){
+                            if (response.isSuccess()) {
                                 loading.dismiss();
-                                Toast.makeText(getContext(),"ON LINE MODE",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "ON LINE MODE", Toast.LENGTH_SHORT).show();
                             }
 
 
@@ -198,8 +195,7 @@ public class Profile extends Fragment {
                     });
 
 
-
-                }else if (!status.isChecked()){
+                } else if (!status.isChecked()) {
 
 
                     //Loading Dialog
@@ -211,25 +207,21 @@ public class Profile extends Fragment {
                     loading2.show();
 
 
-
-
                     hash.put("UserID", driverProfiledata.getUserID());
                     hash.put("DriverID", driverProfiledata.getDriverID());
                     hash.put("FullName", driverProfiledata.getFullName());
-                    hash.put("Address",driverProfiledata.getAddress());
-                    hash.put("VehiclePlateNo",driverProfiledata.getVehiclePlateNo());
-                    hash.put("MobileNo",driverProfiledata.getMobileNo());
-                    hash.put("PersonalPhoto",driverProfiledata.getPersonalPhoto());
-                    hash.put("BranchCode",driverProfiledata.getBranchCode());
-                    hash.put("Available",false);
-                    hash.put("ObjectState",driverProfiledata.getObjectState());
-                    gson=new Gson();
-                    dataGson=gson.toJson(hash);
+                    hash.put("Address", driverProfiledata.getAddress());
+                    hash.put("VehiclePlateNo", driverProfiledata.getVehiclePlateNo());
+                    hash.put("MobileNo", driverProfiledata.getMobileNo());
+                    hash.put("PersonalPhoto", driverProfiledata.getPersonalPhoto());
+                    hash.put("BranchCode", driverProfiledata.getBranchCode());
+                    hash.put("Available", false);
+                    hash.put("ObjectState", driverProfiledata.getObjectState());
+                    gson = new Gson();
+                    dataGson = gson.toJson(hash);
 
 
-
-                   // Log.e("DATAJSON", dataGson);
-
+                    // Log.e("DATAJSON", dataGson);
 
 
                     Genrator.createService(DriversApi.class).updateDriverinfo(dataGson).enqueue(new Callback<ResponseBody>() {
@@ -246,13 +238,8 @@ public class Profile extends Fragment {
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
 
 
-
                         }
                     });
-
-
-
-
 
 
                 }
@@ -273,8 +260,6 @@ public class Profile extends Fragment {
                 //Start Login activity
                 startActivity(new Intent(getContext(), LoginActivity.class));
                 getActivity().finish();
-
-
 
 
             }

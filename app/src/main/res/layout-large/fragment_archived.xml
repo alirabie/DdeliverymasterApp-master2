@@ -44,6 +44,33 @@
                 android:textColor="#000000"
                 android:textSize="15dp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="TIME"
+                android:id="@+id/textView8"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="15dp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="DATE"
+                android:id="@+id/textView8x"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="#ff0000"
+                android:textSize="15dp" />
+
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

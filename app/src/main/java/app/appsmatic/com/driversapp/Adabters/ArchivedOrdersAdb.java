@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import app.appsmatic.com.driversapp.API.Models.ArchivedOrder;
 import app.appsmatic.com.driversapp.R;
@@ -40,8 +42,20 @@ public class ArchivedOrdersAdb extends RecyclerView.Adapter<ArchivedOrdersAdb.vh
     @Override
     public void onBindViewHolder(vh2 holder, int position) {
 
-        holder.orderid.setText(archivedOrders.get(position).getOrderID()+"");
+
+        String ackwardDate = archivedOrders.get(position).getOrderDate();
+        Calendar calendar = Calendar.getInstance();
+        String ackwardRipOff = ackwardDate.replace("/Date(", "").replace(")/", "");
+        Long timeInMillis = Long.valueOf(ackwardRipOff);
+        calendar.setTimeInMillis(timeInMillis);
+        SimpleDateFormat timef = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat datef = new SimpleDateFormat("dd:MM:yyyy:EEE");
+
+        holder.orderid.setText(archivedOrders.get(position).getOrderID() + "");
         holder.price.setText(archivedOrders.get(position).getTotalAmount()+"");
+        holder.date.setText(datef.format(calendar.getTime()));
+        holder.time.setText(timef.format(calendar.getTime()));
+
 
 
 
@@ -65,13 +79,15 @@ public class ArchivedOrdersAdb extends RecyclerView.Adapter<ArchivedOrdersAdb.vh
 
     public static class vh2 extends RecyclerView.ViewHolder{
 
-        TextView orderid,price,duration;
+        TextView orderid,price,time,date;
 
 
         public vh2(View itemView) {
             super(itemView);
             orderid=(TextView)itemView.findViewById(R.id.ar_order);
             price=(TextView)itemView.findViewById(R.id.ar_price);
+            time=(TextView)itemView.findViewById(R.id.ar_time);
+            date=(TextView)itemView.findViewById(R.id.ar_date);
 
 
 

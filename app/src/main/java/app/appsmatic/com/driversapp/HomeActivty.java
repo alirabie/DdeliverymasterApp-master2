@@ -17,18 +17,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.logging.Handler;
-
 import app.appsmatic.com.driversapp.Adabters.VeiwpagerAdb;
 import app.appsmatic.com.driversapp.Fragments.Archived;
 import app.appsmatic.com.driversapp.Fragments.Orders;
 import app.appsmatic.com.driversapp.Fragments.Profile;
 import app.appsmatic.com.driversapp.GPS.GPSTracker;
+
 
 public class HomeActivty extends AppCompatActivity {
     public static String id;
@@ -46,6 +40,10 @@ public class HomeActivty extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        //Check Gps Status
+        checkGpsStatus();
+
 
         //Check Os Ver For Set Status Bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -170,6 +168,42 @@ public class HomeActivty extends AppCompatActivity {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -182,4 +216,3 @@ public class HomeActivty extends AppCompatActivity {
 
 
 
-}

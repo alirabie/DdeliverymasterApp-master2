@@ -9,18 +9,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.ArchivedOrder;
+import app.appsmatic.com.driversapp.API.Models.Archived_enhanc;
 import app.appsmatic.com.driversapp.Adabters.ArchivedOrdersAdb;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.MapsActivity;
@@ -56,6 +60,8 @@ public class Archived extends Fragment {
         total=(TextView)getActivity().findViewById(R.id.ar_total);
         noAchived=(TextView)getActivity().findViewById(R.id.no_archived);
         noAchived.setVisibility(View.INVISIBLE);
+      //  fillarchivedDb();
+
 
 
 
@@ -65,7 +71,8 @@ public class Archived extends Fragment {
             @Override
             public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
                 archivedOrders.addAll(response.body());
-                if(archivedOrders.size()==0){
+
+                 if(archivedOrders.size()==0){
                     noAchived.setVisibility(View.VISIBLE);
                 }
             }
@@ -100,6 +107,8 @@ public class Archived extends Fragment {
 
 
 
+
+
     }
 
     @Override
@@ -110,8 +119,9 @@ public class Archived extends Fragment {
         Genrator.createService(DriversApi.class).getArchivedOrders(HomeActivty.id).enqueue(new Callback<List<ArchivedOrder>>() {
             @Override
             public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
-                totalvalue=0;
+                totalvalue = 0;
                 adb = new ArchivedOrdersAdb(response.body(), getContext());
+
                 arclist.setAdapter(adb);
                 arclist.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -134,4 +144,12 @@ public class Archived extends Fragment {
 
 
     }
+
+
+
+
+
+
+
+
 }
