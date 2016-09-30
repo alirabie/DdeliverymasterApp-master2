@@ -45,7 +45,7 @@ public class Items_Adb extends RecyclerView.Adapter<Items_Adb.vh3> {
             holder.item.setText(orderDetails.get(position).getName() + "");
             holder.qty.setText(orderDetails.get(position).getQuantity() + "");
             holder.price.setText(orderDetails.get(position).getItemPrice() + "");
-            holder.total.setText((orderDetails.get(position).getItemPrice() * orderDetails.get(position).getQuantity() + ""));
+            holder.total.setText((orderDetails.get(position).getTotalPrice()+""));
 
 
             additions_adb=new Additions_Adb(context,orderDetails.get(position).getAdditions());
