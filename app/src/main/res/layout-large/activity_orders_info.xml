@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Please , Commitment on Time delivery and ensure the address which indicated before ."
-        android:id="@+id/textView13"
+        android:id="@+id/coment"
         android:textSize="13dp"
         android:inputType="text|textMultiLine"
         android:layout_alignBottom="@+id/imageView6"

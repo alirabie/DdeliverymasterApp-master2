@@ -7,8 +7,8 @@
     android:id="@+id/relativeLayout2"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -87,8 +87,12 @@
         android:background="#d9d9d9" />
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addslist">
+        android:layout_height="match_parent"
+        android:id="@+id/addslist"
+        android:scrollIndicators="left|right"
+        android:textAlignment="center"
+        android:nestedScrollingEnabled="false"
+        android:layout_gravity="center_horizontal">
 
     </android.support.v7.widget.RecyclerView>
 

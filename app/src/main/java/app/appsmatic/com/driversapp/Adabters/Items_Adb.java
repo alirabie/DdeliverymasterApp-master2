@@ -50,7 +50,9 @@ public class Items_Adb extends RecyclerView.Adapter<Items_Adb.vh3> {
 
             additions_adb=new Additions_Adb(context,orderDetails.get(position).getAdditions());
             holder.addslist.setAdapter(additions_adb);
-            holder.addslist.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false));
+            LinearLayoutManager linearLayoutManager =new LinearLayoutManager(context);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            holder.addslist.setLayoutManager(linearLayoutManager);
 
         if (orderDetails.get(position).getAdditions().isEmpty()){
             holder.noadds.setVisibility(View.VISIBLE);

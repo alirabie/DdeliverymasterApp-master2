@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
@@ -17,6 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+
+import java.util.Locale;
+
 import app.appsmatic.com.driversapp.Adabters.VeiwpagerAdb;
 import app.appsmatic.com.driversapp.Fragments.Archived;
 import app.appsmatic.com.driversapp.Fragments.Orders;
@@ -40,6 +44,16 @@ public class HomeActivty extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+
+
+        //set local default english
+        Locale locale = new Locale("en");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
 
         //Check Gps Status
         checkGpsStatus();

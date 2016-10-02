@@ -2,6 +2,7 @@ package app.appsmatic.com.driversapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
@@ -32,6 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import app.appsmatic.com.driversapp.GPS.DirectionsJSONParser;
 import app.appsmatic.com.driversapp.GPS.GPSTracker;
@@ -52,6 +54,14 @@ public class MapsActivity extends FragmentActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //set local default english
+        Locale locale = new Locale("en");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
 
         //Get Lat and Lng
         Bundle extras = getIntent().getExtras();

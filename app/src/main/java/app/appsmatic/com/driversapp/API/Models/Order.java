@@ -45,6 +45,10 @@ public class Order {
     @SerializedName("Confirmed")
     @Expose
     private Boolean confirmed;
+    @SerializedName("Comment")
+    @Expose
+    private String comment;
+
 
 
 
@@ -270,4 +274,22 @@ public class Order {
         this.confirmed = confirmed;
     }
 
+
+    /**
+     *
+     * @return
+     * The comment
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     *
+     * @param comment
+     * The Comment
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

@@ -237,14 +237,16 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
             public void onClick(View v) {
 
                 context.startActivity(new Intent(context, Orders_info.class)
-                        .putExtra("phone", orders.get(position).getMobileNo() + "")
+                        .putExtra("phone", orders.get(position).getMobileNo() + " ")
                         .putExtra("totalPrice", orders.get(position).getTotalAmount())
                         .putExtra("statusID", orders.get(position).getStatusID())
-                        .putExtra("custname", orders.get(position).getCustomer() + "")
+                        .putExtra("custname", orders.get(position).getCustomer() + " ")
                         .putExtra("orderId", orders.get(position).getOrderID().toString())
                         .putExtra("ordertime",orders.get(position).getTimeToRecieve())
                         .putExtra("lat", orders.get(position).getLatitude())
-                        .putExtra("lng", orders.get(position).getLongtitude()));
+                        .putExtra("lng", orders.get(position).getLongtitude())
+                        .putExtra("comment", orders.get(position).getComment()+" "));
+
             }
         });
 

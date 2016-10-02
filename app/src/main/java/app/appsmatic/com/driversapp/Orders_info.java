@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
@@ -49,10 +51,10 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
     Float lng;
     int statusId;
     Float totalprice;
-    String orderId,custmerName,phoneNum,time;
+    String orderId,custmerName,phoneNum,time,comit;
     RecyclerView itemslist;
     TextView name,id,duration;
-    TextView deleveredbtn,onwaybtn,donebtn,failedbtn,tv_total_price;
+    TextView deleveredbtn,onwaybtn,donebtn,failedbtn,tv_total_price,coment_tv;
 
     private ImageView sms,phone,backbtn,mapBtn;
     private TextView delevered,packed;
@@ -63,6 +65,14 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_info);
+
+
+        Locale locale = new Locale("en");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
 
         //Back button setup
         backbtn=(ImageView)findViewById(R.id.back_btn);
@@ -83,6 +93,11 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
         statusId=extras.getInt("statusID");
         totalprice=extras.getFloat("totalPrice");
         time=extras.getString("ordertime");
+        comit=extras.getString("comment");
+
+        //user comment
+        coment_tv=(TextView)findViewById(R.id.coment);
+        coment_tv.setText(comit);
 
 
 

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -16,6 +17,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.util.Locale;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
@@ -41,6 +44,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_main);
+
+        //set local default english
+        Locale locale = new Locale("en");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
+
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Please , Commitment on Time delivery and ensure the address which indicated before ."
-        android:id="@+id/textView13"
+        android:id="@+id/coment"
         android:textSize="9dp"
         android:inputType="text|textMultiLine"
         android:layout_alignBottom="@+id/imageView6"
@@ -353,8 +353,8 @@
         tools:context="app.appsmatic.com.driversapp.MapsActivity"
         android:layout_weight="2"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/textView13"
-        android:layout_alignEnd="@+id/textView13" />
+        android:layout_alignRight="@+id/coment"
+        android:layout_alignEnd="@+id/coment" />
 
     <TextView
         android:layout_width="match_parent"
@@ -369,7 +369,7 @@
         android:textSize="12dp"
         android:textColor="#000000"
         android:layout_above="@+id/but"
-        android:layout_alignRight="@+id/textView13"
-        android:layout_alignEnd="@+id/textView13" />
+        android:layout_alignRight="@+id/coment"
+        android:layout_alignEnd="@+id/coment" />
 
 </RelativeLayout>
