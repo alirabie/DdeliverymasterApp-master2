@@ -75,8 +75,8 @@ public class Profile extends Fragment {
         car=(TextView)getActivity().findViewById(R.id.pr_driver_car);
         profileImg=(CircleImageView)getActivity().findViewById(R.id.profilepic);
         status=(ToggleButton)getActivity().findViewById(R.id.driver_status_profile);
-        change_name_btn=(TextView)getActivity().findViewById(R.id.changedname_lbl);
-        change_phone_btn=(TextView)getActivity().findViewById(R.id.changednumlbl);
+       // change_name_btn=(TextView)getActivity().findViewById(R.id.changedname_lbl);
+      //  change_phone_btn=(TextView)getActivity().findViewById(R.id.changednumlbl);
         signoutBtn=(TextView)getActivity().findViewById(R.id.signoutBtn);
         profileImg.setBorderColor(R.color.colorPrimary);
         profileImg.setBorderWidth(3);
@@ -85,7 +85,7 @@ public class Profile extends Fragment {
         dataGson=gson.toJson(hash);
 
 
-
+/*
 
         change_name_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +102,7 @@ public class Profile extends Fragment {
             }
         });
 
-
+*/
 
 
 

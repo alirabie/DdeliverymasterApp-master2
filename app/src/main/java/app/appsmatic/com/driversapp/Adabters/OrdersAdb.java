@@ -245,7 +245,7 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
                         .putExtra("ordertime",orders.get(position).getTimeToRecieve())
                         .putExtra("lat", orders.get(position).getLatitude())
                         .putExtra("lng", orders.get(position).getLongtitude())
-                        .putExtra("comment", orders.get(position).getComment()+" "));
+                        .putExtra("comment", orders.get(position).getDeliveryAddress()+" "));
 
             }
         });
