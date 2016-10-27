@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="22" />
@@ -14,6 +15,7 @@
         android:maxSdkVersion="22" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -43,7 +45,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
@@ -58,13 +59,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChangeDriverName"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
-        <activity android:name=".ChangeDriverNumber"
-            android:theme="@style/Theme.AppCompat.Dialog">
+        <activity
+            android:name=".ChangeDriverName"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
+            android:name=".Notification_info"
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
 
-        </activity>
+        <!-- Firebase Notifications -->
+        <service android:name=".FCM.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".FCM.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- ./Firebase Notifications -->
 
+        <activity
+            android:name=".FCM.Notification_activity"
+            android:label="@string/title_activity_notification_activity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

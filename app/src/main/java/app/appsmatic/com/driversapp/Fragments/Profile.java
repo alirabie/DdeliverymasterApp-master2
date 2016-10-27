@@ -1,7 +1,6 @@
 package app.appsmatic.com.driversapp.Fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,15 +18,11 @@ import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverProfile;
-import app.appsmatic.com.driversapp.ChangeDriverName;
-import app.appsmatic.com.driversapp.ChangeDriverNumber;
 import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.LoginActivity;
@@ -98,7 +93,7 @@ public class Profile extends Fragment {
         change_phone_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), ChangeDriverNumber.class));
+                startActivity(new Intent(getContext(), Notification_info.class));
             }
         });
 

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Mido PC on 9/20/2016.
  */
-public class Addition {
+public class Addition{
 
 
     @SerializedName("AdditionID")

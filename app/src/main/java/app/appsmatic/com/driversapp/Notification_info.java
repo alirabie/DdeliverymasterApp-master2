@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangeDriverNumber extends AppCompatActivity {
+public class Notification_info extends AppCompatActivity {
 
     private EditText numtxt;
     private Button save;
@@ -56,13 +56,13 @@ public class ChangeDriverNumber extends AppCompatActivity {
 
                 if(numtxt.getText().toString().isEmpty()){
 
-                    Toast.makeText(ChangeDriverNumber.this, "Please Insert New Phone Num ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Notification_info.this, "Please Insert New Phone Num ", Toast.LENGTH_SHORT).show();
 
 
                 }else {
 
                     //Loading Dialog
-                    final ProgressDialog loading = new ProgressDialog(ChangeDriverNumber.this);
+                    final ProgressDialog loading = new ProgressDialog(Notification_info.this);
                     loading.setIndeterminate(true);
                     loading.setIcon(android.R.drawable.ic_lock_idle_alarm);
                     loading.setTitle("Please Wait ..");
@@ -95,7 +95,7 @@ public class ChangeDriverNumber extends AppCompatActivity {
                             if (loading.isShowing())
                                 loading.dismiss();
                             finish();
-                            Toast.makeText(ChangeDriverNumber.this, "Phone Num Changed Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Notification_info.this, "Phone Num Changed Successfully", Toast.LENGTH_SHORT).show();
 
                         }
 

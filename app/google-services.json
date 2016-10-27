@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "615150116483",
+    "firebase_url": "https://delivery-master-3ea6d.firebaseio.com",
+    "project_id": "delivery-master-3ea6d",
+    "storage_bucket": "delivery-master-3ea6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615150116483:android:5e88d9942c50774f",
+        "android_client_info": {
+          "package_name": "app.appsmatic.com.driversapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615150116483-b63lmidfp2cd74sfklq0p56g4sm6dl30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDwlv-wGytynSdx-vrgDGyKm0FaclnDZI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

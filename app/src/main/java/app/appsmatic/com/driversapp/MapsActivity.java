@@ -78,7 +78,7 @@ public class MapsActivity extends FragmentActivity  {
 
 
         // Getting Map for the SupportMapFragment
-        map = fm.getMap();
+       //  map = fm.getMapAsync;
 
         if (map != null) {
 

@@ -41,28 +41,27 @@
             android:layout_height="wrap_content">
 
             <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/driver_status_profile"
                 android:button="@drawable/driverstatusbtn"
-                android:layout_marginBottom="10dp"
                 android:checked="false"
-                android:layout_gravity="center_vertical"
                 android:background="#cbcbcb"
                 android:textOff="OFF LINE"
                 android:textOn="ON LINE"
-                android:padding="10dp" />
+                android:padding="10dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Sign Out"
                 android:id="@+id/signoutBtn"
                 android:gravity="center"
                 android:padding="11dp"
-                android:textStyle="bold"
-                android:textColor="#ff2b00" />
+                android:textColor="#ff2b00"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
