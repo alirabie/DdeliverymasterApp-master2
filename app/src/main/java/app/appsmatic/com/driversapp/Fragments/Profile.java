@@ -48,12 +48,6 @@ public class Profile extends Fragment {
 
 
 
-
-
-
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,8 +64,8 @@ public class Profile extends Fragment {
         car=(TextView)getActivity().findViewById(R.id.pr_driver_car);
         profileImg=(CircleImageView)getActivity().findViewById(R.id.profilepic);
         status=(ToggleButton)getActivity().findViewById(R.id.driver_status_profile);
-       // change_name_btn=(TextView)getActivity().findViewById(R.id.changedname_lbl);
-      //  change_phone_btn=(TextView)getActivity().findViewById(R.id.changednumlbl);
+        // change_name_btn=(TextView)getActivity().findViewById(R.id.changedname_lbl);
+        //  change_phone_btn=(TextView)getActivity().findViewById(R.id.changednumlbl);
         signoutBtn=(TextView)getActivity().findViewById(R.id.signoutBtn);
         profileImg.setBorderColor(R.color.colorPrimary);
         profileImg.setBorderWidth(3);
@@ -125,7 +119,10 @@ public class Profile extends Fragment {
                     byte[] decodedString = Base64.decode(response.body().getPersonalPhoto(), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     profileImg.setImageBitmap(decodedByte);
+                } else {
+                    Toast.makeText(getContext(),"Response from server not Success Try again later !!", Toast.LENGTH_LONG).show();
                 }
+
 
             }
 

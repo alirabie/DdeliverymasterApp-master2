@@ -70,10 +70,14 @@ public class Archived extends Fragment {
         Genrator.createService(DriversApi.class).getArchivedOrders(HomeActivty.id).enqueue(new Callback<List<ArchivedOrder>>() {
             @Override
             public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
-                archivedOrders.addAll(response.body());
+                if(response.isSuccess()) {
+                    archivedOrders.addAll(response.body());
+                    if (archivedOrders.size() == 0) {
+                        noAchived.setVisibility(View.VISIBLE);
+                    }
+                }else{
 
-                 if(archivedOrders.size()==0){
-                    noAchived.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(),"Response from server not Success Try again later !!", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -119,19 +123,23 @@ public class Archived extends Fragment {
         Genrator.createService(DriversApi.class).getArchivedOrders(HomeActivty.id).enqueue(new Callback<List<ArchivedOrder>>() {
             @Override
             public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
-                totalvalue = 0;
-                adb = new ArchivedOrdersAdb(response.body(), getContext());
 
-                arclist.setAdapter(adb);
-                arclist.setLayoutManager(new LinearLayoutManager(getContext()));
+              if(response.isSuccess()) {
+                  totalvalue = 0;
+                  adb = new ArchivedOrdersAdb(response.body(), getContext());
 
-                for (int i = 0; i < response.body().size(); i++) {
+                  arclist.setAdapter(adb);
+                  arclist.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                    totalvalue += response.body().get(i).getTotalAmount();
-                }
+                  for (int i = 0; i < response.body().size(); i++) {
 
-                total.setText("TOTAL : " + totalvalue + " SR");
+                      totalvalue += response.body().get(i).getTotalAmount();
+                  }
 
+                  total.setText("TOTAL : " + totalvalue + " SR");
+              }else {
+                  Toast.makeText(getContext(),"Response from server not Success Try again later !!", Toast.LENGTH_LONG).show();
+              }
             }
 
             @Override

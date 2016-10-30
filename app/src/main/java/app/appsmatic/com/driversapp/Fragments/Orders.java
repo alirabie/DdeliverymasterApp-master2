@@ -67,16 +67,23 @@ public class Orders extends Fragment {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
 
-                orders.addAll(response.body());
-                if (orders.isEmpty()) {
-                    noOrdersLable.setVisibility(View.VISIBLE);
+                if (response.isSuccess()) {
+                    orders.addAll(response.body());
+                    if (orders.isEmpty()) {
+                        noOrdersLable.setVisibility(View.VISIBLE);
+                    }
+
+                    //Setup Orders List
+                    adb = new OrdersAdb(orders, getActivity());
+                    ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
+                    ordersList.setAdapter(adb);
+                    ordersList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                }else {
+
+                    Toast.makeText(getContext(),"Response from server not Success Try again later !!", Toast.LENGTH_LONG).show();
+
                 }
 
-                //Setup Orders List
-                adb = new OrdersAdb(orders, getActivity());
-                ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
-                ordersList.setAdapter(adb);
-                ordersList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
             }
 
