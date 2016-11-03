@@ -31,5 +31,15 @@
         android:layout_gravity="center"
         android:textSize="30dp" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Click to update Orders List"
+        android:id="@+id/ref"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="#ff3700"
+        android:textSize="15dp"
+        android:textColor="#ffffff" />
+
 
 </FrameLayout>

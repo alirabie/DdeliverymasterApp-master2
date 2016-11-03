@@ -248,16 +248,33 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public void onResponse(Call<List<OrderDetail>> call, Response<List<OrderDetail>> response) {
 
-                itemslist = (RecyclerView) findViewById(R.id.item_order_list);
-                itemslist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                itemslist.setAdapter(new Items_Adb(getApplicationContext(), response.body()));
-                name = (TextView) findViewById(R.id.tv_info_cust_name);
-                id = (TextView) findViewById(R.id.tv_orser_info_id);
-                tv_total_price = (TextView) findViewById(R.id.order_details_tv_totalprice);
+                if(response.isSuccess()) {
+                    itemslist = (RecyclerView) findViewById(R.id.item_order_list);
+                    itemslist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    itemslist.setAdapter(new Items_Adb(getApplicationContext(), response.body()));
+                    name = (TextView) findViewById(R.id.tv_info_cust_name);
+                    id = (TextView) findViewById(R.id.tv_orser_info_id);
+                    tv_total_price = (TextView) findViewById(R.id.order_details_tv_totalprice);
 
-                id.setText("Order# " + orderId);
-                name.setText(custmerName);
-                tv_total_price.setText("Total Price : " + totalprice + " SR");
+                    id.setText("Order# " + orderId);
+                    name.setText(custmerName);
+                    tv_total_price.setText("Total Price : " + totalprice + " SR");
+                }else {
+
+
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(Orders_info.this);
+                    builder.setMessage("Response From Server Not success try again later ... !")
+                            .setCancelable(false)
+                            .setTitle("Server Not Responding")
+                            .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            }).setIcon(R.drawable.cast_ic_stop_circle_filled_grey600);
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+                }
 
             }
 

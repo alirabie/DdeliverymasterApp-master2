@@ -1,6 +1,8 @@
 package app.appsmatic.com.driversapp.Fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -120,7 +122,17 @@ public class Profile extends Fragment {
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     profileImg.setImageBitmap(decodedByte);
                 } else {
-                    Toast.makeText(getContext(),"Response from server not Success Try again later !!", Toast.LENGTH_LONG).show();
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Response From Server Not success try again later ... !")
+                            .setCancelable(false)
+                            .setTitle("Server Not Responding")
+                            .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            }).setIcon(R.drawable.cast_ic_stop_circle_filled_grey600);
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
 
 

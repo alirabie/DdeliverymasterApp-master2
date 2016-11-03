@@ -1,7 +1,9 @@
 package app.appsmatic.com.driversapp.Fragments;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -138,7 +140,18 @@ public class Archived extends Fragment {
 
                   total.setText("TOTAL : " + totalvalue + " SR");
               }else {
-                  Toast.makeText(getContext(),"Response from server not Success Try again later !!", Toast.LENGTH_LONG).show();
+
+                  final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                  builder.setMessage("Response From Server Not success try again later ... !")
+                          .setCancelable(false)
+                          .setTitle("Server Not Responding")
+                          .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                              public void onClick(DialogInterface dialog, int id) {
+                                  dialog.dismiss();
+                              }
+                          }).setIcon(R.drawable.cast_ic_stop_circle_filled_grey600);
+                  AlertDialog alert = builder.create();
+                  alert.show();
               }
             }
 
