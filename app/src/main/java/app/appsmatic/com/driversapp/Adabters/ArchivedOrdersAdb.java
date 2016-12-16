@@ -43,6 +43,7 @@ public class ArchivedOrdersAdb extends RecyclerView.Adapter<ArchivedOrdersAdb.vh
     public void onBindViewHolder(vh2 holder, int position) {
 
 
+        /*
         String ackwardDate = archivedOrders.get(position).getOrderDate();
         Calendar calendar = Calendar.getInstance();
         String ackwardRipOff = ackwardDate.replace("/Date(", "").replace(")/", "");
@@ -50,11 +51,11 @@ public class ArchivedOrdersAdb extends RecyclerView.Adapter<ArchivedOrdersAdb.vh
         calendar.setTimeInMillis(timeInMillis);
         SimpleDateFormat timef = new SimpleDateFormat("hh:mm:ss");
         SimpleDateFormat datef = new SimpleDateFormat("dd:MM:yyyy:EEE");
-
+*/
         holder.orderid.setText(archivedOrders.get(position).getOrderID() + "");
         holder.price.setText(archivedOrders.get(position).getTotalAmount()+"");
-        holder.date.setText(datef.format(calendar.getTime()));
-        holder.time.setText(timef.format(calendar.getTime()));
+        holder.date.setText(archivedOrders.get(position).getOrderDate()+"");
+        holder.time.setText(archivedOrders.get(position).getAssignedDate()+"");
 
 
 

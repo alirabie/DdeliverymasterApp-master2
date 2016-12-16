@@ -318,7 +318,7 @@ public class HomeActivty extends AppCompatActivity {
         Log.e(TAG, "Firebase reg id: " + regId);
 
         if (!TextUtils.isEmpty(regId))
-           Toast.makeText(getBaseContext(),"Firebase Reg Id: " + regId,Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Firebase reg id: " + regId);
         else
             Toast.makeText(getApplicationContext(), "Firebase Reg Id is not received yet!", Toast.LENGTH_SHORT);
     }

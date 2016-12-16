@@ -8,9 +8,15 @@ import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.DriverProfile;
 import app.appsmatic.com.driversapp.API.Models.DriverUpdate;
+import app.appsmatic.com.driversapp.API.Models.LoginData;
 import app.appsmatic.com.driversapp.API.Models.Msg;
 import app.appsmatic.com.driversapp.API.Models.Order;
 import app.appsmatic.com.driversapp.API.Models.OrderDetail;
+import app.appsmatic.com.driversapp.API.Models.ResArchived;
+import app.appsmatic.com.driversapp.API.Models.ResConfirmOrder;
+import app.appsmatic.com.driversapp.API.Models.ResOrderDetails;
+import app.appsmatic.com.driversapp.API.Models.ResOrders;
+import app.appsmatic.com.driversapp.API.Models.ResProfile;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,44 +32,45 @@ import retrofit2.http.Part;
  */
 public interface DriversApi {
 
-    @FormUrlEncoded
-    @POST("Account/DriverLogin")
-    Call<DriverID> login(@Field("username") String username,@Field("password")String password);
 
 
-    @FormUrlEncoded
-    @POST("DriverApp/GetDriverOrders")
-    Call<List<Order>> getOrders(@Field("UserID") String userID);
-
-
-    @FormUrlEncoded
-    @POST("DriverApp/GetArchivedOrders")
-    Call<List<ArchivedOrder>> getArchivedOrders(@Field("UserID") String userID);
-
-
-    @FormUrlEncoded
-    @POST("DriverApp/OrderDetails")
-    Call<List<OrderDetail>> getOrderDetails(@Field("OrderID") String orderID);
-
-
-    @FormUrlEncoded
-    @POST("DriverApp/ChangeOrderStatus")
-    Call<ChangeStautMsg> changeStautMsg(@Field("OrderID") String orderID,@Field("status") String statusID);
-
-
-    @FormUrlEncoded
-    @POST("DriverApp/ConfirmOrderPickup")
-    Call<DriverID> ConfirmOrder(@Field("DriverId") String driverId,@Field("OrderId") int orderID );
-
-    @FormUrlEncoded
-    @POST("DriverApp/profile")
-    Call<DriverProfile> getProfile(@Field("UserID") String userID);
+    @POST("account/login")
+    Call<DriverID> login(@Body Object logindtat);
 
 
 
-    @FormUrlEncoded
-    @POST("DriverApp/update")
-    Call<ResponseBody> updateDriverinfo(@Field("Driver") String driver);
+    @POST("driver/Orders")
+    Call<ResOrders> getOrders(@Body Object userID);
+
+
+
+    @POST("driver/ArchivedOrders")
+    Call<ResArchived> getArchivedOrders(@Body Object userID);
+
+
+
+    @POST("driver/OrderDetails")
+    Call<ResOrderDetails> getOrderDetails(@Body Object orderID);
+
+
+
+    @POST("driver/ChangeOrderStatus")
+    Call<ResConfirmOrder> changeStautMsg(@Body Object st);
+
+
+
+    @POST("driver/ConfirmOrderPickup")
+    Call<ResConfirmOrder> ConfirmOrder(@Body Object conf );
+
+
+    @POST("driver/profile")
+    Call<ResProfile> getProfile(@Body Object userID);
+
+
+
+
+    @POST("driver/update")
+    Call<ResponseBody> updateDriverinfo(@Body Object driver);
 
 
 }

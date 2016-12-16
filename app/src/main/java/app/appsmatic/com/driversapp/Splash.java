@@ -5,15 +5,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
+import app.appsmatic.com.driversapp.API.Models.LoginData;
 import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,11 +25,14 @@ import retrofit2.Response;
 
 public class Splash extends AppCompatActivity {
 
+    private LoginData loginData;
+    private int code=1111;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        loginData=new LoginData();
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -62,29 +69,48 @@ public class Splash extends AppCompatActivity {
                     else
                     {
                         //if saved username in prefs is not empty use it to login
-                        Genrator.createService(DriversApi.class).login(SaveSharedPreference.getUserName(getApplicationContext())+"",SaveSharedPreference.getUserPassword(getApplicationContext())+"")
+                        loginData.setUserName(SaveSharedPreference.getUserName(getApplicationContext()) + "");
+                        loginData.setPassword(SaveSharedPreference.getUserPassword(getApplicationContext()) + "");
+
+                        Genrator.createService(DriversApi.class).login(loginData)
                                 .enqueue(new Callback<DriverID>() {
                                     @Override
                                     public void onResponse(Call<DriverID> call, Response<DriverID> response) {
 
-                                        if(response.body().getMessage()==null){
+                                        if(response.isSuccess()) {
+                                            String code=response.body().getCode()+"";
+                                            if(!code.equals("0")) {
+                                                Splash.this.finish();
+                                                startActivity(new Intent(getApplicationContext(), HomeActivty.class).putExtra("DriverID", response.body().getDriverid()));
+                                                Log.e("eeeee", response.body().getDriverid());
+                                            } else {
+                                                new AlertDialog.Builder(Splash.this)
+                                                        .setTitle("Authentication Error")
+                                                        .setMessage(response.body().getMessage() + "")
+                                                        .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
 
-                                            Splash.this.finish();
-                                            startActivity(new Intent(getApplicationContext(), HomeActivty.class).putExtra("DriverID", response.body().getDriverid()));
+                                                                //if user in prefs not valid go to login activity again
+                                                                startActivity(new Intent(Splash.this, LoginActivity.class));
+                                                            }
+                                                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
 
-                                        }else {
+                                            }
+                                        }else{
 
-                                            new AlertDialog.Builder(Splash.this)
-                                                    .setTitle("Authentication Error")
-                                                    .setMessage(response.body().getMessage()+"")
-                                                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
 
-                                                            //if user in prefs not valid go to login activity again
-                                                           startActivity(new Intent(Splash.this,LoginActivity.class));
+                                            final AlertDialog.Builder builder = new AlertDialog.Builder(Splash.this);
+                                            builder.setMessage("Response From Server Not success try again later ... !")
+                                                    .setCancelable(false)
+                                                    .setTitle("Server Not Responding")
+                                                    .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.dismiss();
                                                         }
-                                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                                                    }).setIcon(R.drawable.cast_ic_stop_circle_filled_grey600);
+                                            AlertDialog alert = builder.create();
+                                            alert.show();
 
                                         }
                                     }

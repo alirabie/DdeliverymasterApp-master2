@@ -49,7 +49,7 @@ public class Notification_activity extends AppCompatActivity {
 
                     String message = intent.getStringExtra("message");
 
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+                   Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
                     Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
                 }
@@ -68,9 +68,10 @@ public class Notification_activity extends AppCompatActivity {
         Log.e(TAG, "Firebase reg id: " + regId);
 
         if (!TextUtils.isEmpty(regId))
-            Toast.makeText(getBaseContext(),"Firebase Reg Id: " + regId,Toast.LENGTH_SHORT).show();
+            Log.d("ggggg","Firebase Reg Id: " + regId);
         else
-            Toast.makeText(getApplicationContext(), "Firebase Reg Id is not received yet!", Toast.LENGTH_SHORT);
+            Log.e("errrr", "Firebase Reg Id is not received yet!");
+
     }
 
     @Override

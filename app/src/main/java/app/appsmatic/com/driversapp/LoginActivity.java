@@ -12,17 +12,21 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
+
 import java.util.Locale;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
+import app.appsmatic.com.driversapp.API.Models.LoginData;
 import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,12 +34,14 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private String username;
-    private String password;
+    LoginData loginData;
     private EditText user;
     private EditText pass;
     private ImageView logbtn;
     private String msg="";
+
+    int code=1111;
+
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -44,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_main);
+        loginData=new LoginData();
+
 
         //set local default english
         Locale locale = new Locale("en");
@@ -103,9 +111,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                loginData.setUserName(user.getText().toString() + "");
+                loginData.setPassword(pass.getText().toString() + "");
 
-                username = user.getText().toString();
-                password = pass.getText().toString();
 
                 //Loading Dialog
                 final ProgressDialog mProgressDialog = new ProgressDialog(LoginActivity.this);
@@ -115,36 +123,49 @@ public class LoginActivity extends AppCompatActivity {
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.show();
 
-                Genrator.createService(DriversApi.class).login(username, password).enqueue(new Callback<DriverID>() {
+                Genrator.createService(DriversApi.class).login(loginData).enqueue(new Callback<DriverID>() {
                     @Override
                     public void onResponse(Call<DriverID> call, Response<DriverID> response) {
 
-
-                        if (mProgressDialog.isShowing())
-                            mProgressDialog.dismiss();
-
-
-                        msg = response.body().getMessage();
-                        if (msg == null) {
-
-                            LoginActivity.this.finish();
-                            startActivity(new Intent(getApplicationContext(), HomeActivty.class).putExtra("DriverID", response.body().getDriverid()));
-
-                            //Save UserName And Password in Shared Prefs
-                            SaveSharedPreference.setUserName(getApplicationContext(),username,password);
-                        } else {
+                       
+                        if(response.isSuccess()) {
+                            if (mProgressDialog.isShowing())
+                                mProgressDialog.dismiss();
 
 
-                            new AlertDialog.Builder(LoginActivity.this)
-                                    .setTitle("Authentication Error")
-                                    .setMessage(msg)
-                                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
+                           String code=response.body().getCode()+"";
+                            if (!code.equals("0")) {
+                                LoginActivity.this.finish();
+                                startActivity(new Intent(getApplicationContext(), HomeActivty.class).putExtra("DriverID", response.body().getDriverid()));
+                                //Save UserName And Password in Shared Prefs
+                                SaveSharedPreference.setUserName(getApplicationContext(), user.getText().toString() + "", pass.getText().toString() + "");
+                            } else {
+                                new AlertDialog.Builder(LoginActivity.this)
+                                        .setTitle("Authentication Error")
+                                        .setMessage(response.body().getMessage()+"")
+                                        .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                            }
+                        }else{
+
+                            if (mProgressDialog.isShowing())
+                                mProgressDialog.dismiss();
+
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            builder.setMessage("Response From Server Not success try again later ... !")
+                                    .setCancelable(false)
+                                    .setTitle("Server Not Responding")
+                                    .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
                                             dialog.dismiss();
                                         }
-                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
-
+                                    }).setIcon(R.drawable.cast_ic_stop_circle_filled_grey600);
+                            AlertDialog alert = builder.create();
+                            alert.show();
 
                         }
 

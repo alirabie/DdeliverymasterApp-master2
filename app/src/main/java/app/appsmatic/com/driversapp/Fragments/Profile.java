@@ -25,6 +25,7 @@ import java.util.HashMap;
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverProfile;
+import app.appsmatic.com.driversapp.API.Models.ResProfile;
 import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.LoginActivity;
@@ -105,20 +106,22 @@ public class Profile extends Fragment {
         mProgressDialog.setMessage("Loading...");
         mProgressDialog.show();
 
+        HashMap id=new HashMap();
+        id.put("UserID", HomeActivty.id);
 
-        Genrator.createService(DriversApi.class).getProfile(HomeActivty.id).enqueue(new Callback<DriverProfile>() {
+        Genrator.createService(DriversApi.class).getProfile(id).enqueue(new Callback<ResProfile>() {
             @Override
-            public void onResponse(Call<DriverProfile> call, Response<DriverProfile> response) {
+            public void onResponse(Call<ResProfile> call, Response<ResProfile> response) {
                 if (mProgressDialog.isShowing())
                     mProgressDialog.dismiss();
-
                 if (response.isSuccess()) {
-                    driverProfiledata = response.body();
-                    name.setText(response.body().getFullName() + " ");
-                    phone.setText(response.body().getMobileNo() + " ");
-                    car.setText(response.body().getVehiclePlateNo() + " ");
-                    status.setChecked(response.body().getAvailable());
-                    byte[] decodedString = Base64.decode(response.body().getPersonalPhoto(), Base64.DEFAULT);
+
+                    driverProfiledata = response.body().getMessage();
+                    name.setText(response.body().getMessage().getFullName() + " ");
+                    phone.setText(response.body().getMessage().getMobileNo() + " ");
+                    car.setText(response.body().getMessage().getVehiclePlateNo() + " ");
+                    status.setChecked(response.body().getMessage().getAvailable());
+                    byte[] decodedString = Base64.decode(response.body().getMessage().getPersonalPhoto(), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     profileImg.setImageBitmap(decodedByte);
                 } else {
@@ -139,8 +142,8 @@ public class Profile extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<DriverProfile> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ResProfile> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage()+"jjjjjjjj", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -172,14 +175,13 @@ public class Profile extends Fragment {
                     hash.put("BranchCode", driverProfiledata.getBranchCode());
                     hash.put("Available", true);
                     hash.put("ObjectState", driverProfiledata.getObjectState());
-                    gson = new Gson();
-                    dataGson = gson.toJson(hash);
+
 
 
                     Log.e("DATAJSON", dataGson);
 
 
-                    Genrator.createService(DriversApi.class).updateDriverinfo(dataGson).enqueue(new Callback<ResponseBody>() {
+                    Genrator.createService(DriversApi.class).updateDriverinfo(hash).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
@@ -221,14 +223,12 @@ public class Profile extends Fragment {
                     hash.put("BranchCode", driverProfiledata.getBranchCode());
                     hash.put("Available", false);
                     hash.put("ObjectState", driverProfiledata.getObjectState());
-                    gson = new Gson();
-                    dataGson = gson.toJson(hash);
 
 
                     // Log.e("DATAJSON", dataGson);
 
 
-                    Genrator.createService(DriversApi.class).updateDriverinfo(dataGson).enqueue(new Callback<ResponseBody>() {
+                    Genrator.createService(DriversApi.class).updateDriverinfo(hash).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccess()) {

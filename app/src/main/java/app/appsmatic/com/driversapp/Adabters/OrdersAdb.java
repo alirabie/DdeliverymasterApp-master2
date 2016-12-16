@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,6 +30,7 @@ import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.Order;
+import app.appsmatic.com.driversapp.API.Models.ResConfirmOrder;
 import app.appsmatic.com.driversapp.GPS.GPSTracker;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.MapsActivity;
@@ -196,15 +198,20 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
+                                HashMap id2=new HashMap();
+                                id2.put("DriverID", HomeActivty.id);
+                                id2.put("OrderID", orders.get(position).getOrderID());
 
-                                Genrator.createService(DriversApi.class).ConfirmOrder(HomeActivty.id, orders.get(position).getOrderID()).enqueue(new Callback<DriverID>() {
+
+                                Genrator.createService(DriversApi.class).ConfirmOrder(id2).enqueue(new Callback<ResConfirmOrder>() {
                                     @Override
-                                    public void onResponse(Call<DriverID> call, Response<DriverID> response) {
+                                    public void onResponse(Call<ResConfirmOrder> call, Response<ResConfirmOrder> response) {
+                                        if(response.isSuccess())
                                         Toast.makeText(context, response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override
-                                    public void onFailure(Call<DriverID> call, Throwable t) {
+                                    public void onFailure(Call<ResConfirmOrder> call, Throwable t) {
 
                                         Toast.makeText(context, "Order Confirmation Error " + t.getMessage() + "", Toast.LENGTH_SHORT).show();
 
@@ -261,13 +268,14 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
             holder.duration.setText("Not Set");
 
         }else{
-
+            /*
             String ackwardDate=orders.get(position).getTimeToRecieve();
             Calendar calendar = Calendar.getInstance();
             String ackwardRipOff = ackwardDate.replace("/Date(", "").replace(")/", "");
             Long timeInMillis = Long.valueOf(ackwardRipOff);
             calendar.setTimeInMillis(timeInMillis);
-            holder.duration.setText(calendar.getTime().toLocaleString());
+            */
+            holder.duration.setText(orders.get(position).getTimeToRecieve()+"");
 
         }
 

@@ -31,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +40,8 @@ import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.ChangeStautMsg;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.OrderDetail;
+import app.appsmatic.com.driversapp.API.Models.ResConfirmOrder;
+import app.appsmatic.com.driversapp.API.Models.ResOrderDetails;
 import app.appsmatic.com.driversapp.Adabters.Items_Adb;
 import app.appsmatic.com.driversapp.GPS.GPSTracker;
 import retrofit2.Call;
@@ -54,7 +57,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
     Float totalprice;
     String orderId,custmerName,phoneNum,time,comit;
     RecyclerView itemslist;
-    TextView name,id,duration;
+    TextView name,id2,duration;
     TextView deleveredbtn,onwaybtn,donebtn,failedbtn,tv_total_price,coment_tv;
 
     private ImageView sms,phone,backbtn,mapBtn;
@@ -139,15 +142,21 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                Genrator.createService(DriversApi.class).changeStautMsg(orderId, "4").enqueue(new Callback<ChangeStautMsg>() {
+                                HashMap code2=new HashMap();
+                                code2.put("orderid", orderId);
+                                code2.put("status", "4");
+
+                                Genrator.createService(DriversApi.class).changeStautMsg(code2).enqueue(new Callback<ResConfirmOrder>() {
                                     @Override
-                                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
-                                        Toast.makeText(getApplicationContext(), response.body().getMessage() + "Order deliver Failed !!", Toast.LENGTH_SHORT).show();
-                                        finish();
+                                    public void onResponse(Call<ResConfirmOrder> call, Response<ResConfirmOrder> response) {
+                                        if(response.isSuccess()) {
+                                            Toast.makeText(getApplicationContext(), response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
                                     }
 
                                     @Override
-                                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
+                                    public void onFailure(Call<ResConfirmOrder> call, Throwable t) {
 
                                         Toast.makeText(getApplicationContext(),t.getMessage()+"", Toast.LENGTH_SHORT).show();
 
@@ -186,18 +195,24 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                HashMap code=new HashMap();
+                                code.put("orderid", orderId);
+                                code.put("status", "3");
 
-                                Genrator.createService(DriversApi.class).changeStautMsg(orderId, "3").enqueue(new Callback<ChangeStautMsg>() {
+                                Genrator.createService(DriversApi.class).changeStautMsg(code).enqueue(new Callback<ResConfirmOrder>() {
                                     @Override
-                                    public void onResponse(Call<ChangeStautMsg> call, Response<ChangeStautMsg> response) {
+                                    public void onResponse(Call<ResConfirmOrder> call, Response<ResConfirmOrder> response) {
 
-                                        Toast.makeText(getApplicationContext(), response.body().getMessage() + " Order has been Delivered Successfully", Toast.LENGTH_SHORT).show();
-                                        finish();
+                                        if(response.isSuccess()){
+                                        Toast.makeText(getApplicationContext(), response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
+                                        finish();}else {
+                                            Toast.makeText(getApplicationContext(), response.body().getMessage() + "", Toast.LENGTH_SHORT).show();
+                                        }
 
                                     }
 
                                     @Override
-                                    public void onFailure(Call<ChangeStautMsg> call, Throwable t) {
+                                    public void onFailure(Call<ResConfirmOrder> call, Throwable t) {
 
                                         Toast.makeText(getApplicationContext(),t.getMessage()+"",Toast.LENGTH_SHORT).show();
 
@@ -225,38 +240,24 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        HashMap id=new HashMap();
+        id.put("OrderID", orderId);
 
 
         // Order Items List
-        Genrator.createService(DriversApi.class).getOrderDetails(orderId).enqueue(new Callback<List<OrderDetail>>() {
+        Genrator.createService(DriversApi.class).getOrderDetails(id).enqueue(new Callback<ResOrderDetails>() {
             @Override
-            public void onResponse(Call<List<OrderDetail>> call, Response<List<OrderDetail>> response) {
+            public void onResponse(Call<ResOrderDetails> call, Response<ResOrderDetails> response) {
 
                 if(response.isSuccess()) {
                     itemslist = (RecyclerView) findViewById(R.id.item_order_list);
                     itemslist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    itemslist.setAdapter(new Items_Adb(getApplicationContext(), response.body()));
+                    itemslist.setAdapter(new Items_Adb(getApplicationContext(), response.body().getMessage()));
                     name = (TextView) findViewById(R.id.tv_info_cust_name);
-                    id = (TextView) findViewById(R.id.tv_orser_info_id);
+                    id2 = (TextView) findViewById(R.id.tv_orser_info_id);
                     tv_total_price = (TextView) findViewById(R.id.order_details_tv_totalprice);
 
-                    id.setText("Order# " + orderId);
+                    id2.setText("Order# " + orderId);
                     name.setText(custmerName);
                     tv_total_price.setText("Total Price : " + totalprice + " SR");
                 }else {
@@ -279,7 +280,7 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
             }
 
             @Override
-            public void onFailure(Call<List<OrderDetail>> call, Throwable t) {
+            public void onFailure(Call<ResOrderDetails> call, Throwable t) {
 
                 Toast.makeText(getApplicationContext(),t.getMessage()+"",Toast.LENGTH_SHORT).show();
             }
@@ -386,13 +387,14 @@ public class Orders_info extends FragmentActivity implements OnMapReadyCallback 
             duration.setText("Not Set");
 
         }else{
-
+/*
             String ackwardDate=time;
             Calendar calendar = Calendar.getInstance();
             String ackwardRipOff = ackwardDate.replace("/Date(", "").replace(")/", "");
             Long timeInMillis = Long.valueOf(ackwardRipOff);
             calendar.setTimeInMillis(timeInMillis);
-            duration.setText(calendar.getTime().toLocaleString());
+            */
+            duration.setText(time+"");
 
         }
 

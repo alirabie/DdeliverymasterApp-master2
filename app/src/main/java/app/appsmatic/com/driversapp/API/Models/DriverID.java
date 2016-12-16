@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class DriverID {
 
+    @SerializedName("code")
+    @Expose
+    private Integer code;
     @SerializedName("driverid")
     @Expose
     private String driverid;
@@ -16,6 +19,13 @@ public class DriverID {
     private String message;
 
 
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
     /**
      *
      * @return

@@ -4,19 +4,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Mido PC on 8/31/2016.
+ * Created by Mido PC on 12/16/2016.
  */
-public class Msg {
-
-
+public class ResConfirmOrder {
 
     @SerializedName("code")
     @Expose
     private Integer code;
-    @SerializedName("Msg")
+    @SerializedName("message")
     @Expose
-    int msg;
-
+    private String message;
 
     public Integer getCode() {
         return code;
@@ -26,16 +23,11 @@ public class Msg {
         this.code = code;
     }
 
-    public int getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(int msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
-
-
-
-
-
 }

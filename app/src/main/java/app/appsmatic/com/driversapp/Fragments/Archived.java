@@ -21,12 +21,14 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.ArchivedOrder;
 import app.appsmatic.com.driversapp.API.Models.Archived_enhanc;
+import app.appsmatic.com.driversapp.API.Models.ResArchived;
 import app.appsmatic.com.driversapp.Adabters.ArchivedOrdersAdb;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.MapsActivity;
@@ -65,15 +67,19 @@ public class Archived extends Fragment {
       //  fillarchivedDb();
 
 
+        HashMap id=new HashMap();
+        id.put("UserID", HomeActivty.id);
 
 
 
 
-        Genrator.createService(DriversApi.class).getArchivedOrders(HomeActivty.id).enqueue(new Callback<List<ArchivedOrder>>() {
+
+
+        Genrator.createService(DriversApi.class).getArchivedOrders(id).enqueue(new Callback<ResArchived>() {
             @Override
-            public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
+            public void onResponse(Call<ResArchived> call, Response<ResArchived> response) {
                 if(response.isSuccess()) {
-                    archivedOrders.addAll(response.body());
+                    archivedOrders.addAll(response.body().getMessage());
                     if (archivedOrders.size() == 0) {
                         noAchived.setVisibility(View.VISIBLE);
                     }
@@ -84,7 +90,7 @@ public class Archived extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<ArchivedOrder>> call, Throwable t) {
+            public void onFailure(Call<ResArchived> call, Throwable t) {
 
                 Toast.makeText(getContext(),t.getMessage().toString(),Toast.LENGTH_SHORT).show();
 
@@ -120,22 +126,23 @@ public class Archived extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        HashMap id=new HashMap();
+        id.put("UserID", HomeActivty.id);
 
-
-        Genrator.createService(DriversApi.class).getArchivedOrders(HomeActivty.id).enqueue(new Callback<List<ArchivedOrder>>() {
+        Genrator.createService(DriversApi.class).getArchivedOrders(id).enqueue(new Callback<ResArchived>() {
             @Override
-            public void onResponse(Call<List<ArchivedOrder>> call, Response<List<ArchivedOrder>> response) {
+            public void onResponse(Call<ResArchived> call, Response<ResArchived> response) {
 
               if(response.isSuccess()) {
                   totalvalue = 0;
-                  adb = new ArchivedOrdersAdb(response.body(), getContext());
+                  adb = new ArchivedOrdersAdb(response.body().getMessage(), getContext());
 
                   arclist.setAdapter(adb);
                   arclist.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                  for (int i = 0; i < response.body().size(); i++) {
+                  for (int i = 0; i < response.body().getMessage().size(); i++) {
 
-                      totalvalue += response.body().get(i).getTotalAmount();
+                      totalvalue += response.body().getMessage().get(i).getTotalAmount();
                   }
 
                   total.setText("TOTAL : " + totalvalue + " SR");
@@ -156,7 +163,7 @@ public class Archived extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<ArchivedOrder>> call, Throwable t) {
+            public void onFailure(Call<ResArchived> call, Throwable t) {
 
             }
         });

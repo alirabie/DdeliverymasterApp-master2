@@ -25,12 +25,14 @@ import android.widget.ToggleButton;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.Order;
+import app.appsmatic.com.driversapp.API.Models.ResOrders;
 import app.appsmatic.com.driversapp.Adabters.OrdersAdb;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.LoginActivity;
@@ -69,15 +71,20 @@ public class Orders extends Fragment {
         noOrdersLable=(TextView)getActivity().findViewById(R.id.no_orders);
         noOrdersLable.setVisibility(View.INVISIBLE);
 
-        Genrator.createService(DriversApi.class).getOrders(HomeActivty.id).enqueue(new Callback<List<Order>>() {
+        HashMap id=new HashMap();
+        id.put("UserID", HomeActivty.id);
+
+        Genrator.createService(DriversApi.class).getOrders(id).enqueue(new Callback<ResOrders>() {
             @Override
-            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+            public void onResponse(Call<ResOrders> call, Response<ResOrders> response) {
 
                 if (response.isSuccess()) {
-                    orders.addAll(response.body());
+                    orders.addAll(response.body().getMessage());
                     if (orders.isEmpty()) {
                         noOrdersLable.setVisibility(View.VISIBLE);
                     }
+
+                    //Log.e("hhhhhh",response.body().getMessage().get(0).getCustomer()+"");
 
                     //Setup Orders List
                     adb = new OrdersAdb(orders, getActivity());
@@ -104,9 +111,9 @@ public class Orders extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Order>> call, Throwable t) {
+            public void onFailure(Call<ResOrders> call, Throwable t) {
 
-                Toast.makeText(getContext(), t.getMessage() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage() + "hhhhhhhhh", Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class Genrator {
 
-    private static final String API_URL = "http://betadeliverymaster.appsmatic.net/";
+    private static final String API_URL = "https://deliverymaster.co/api/v1/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
