@@ -126,22 +126,18 @@ public class Archived extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //Send Data Json To Web Service (ID)
         HashMap id=new HashMap();
         id.put("UserID", HomeActivty.id);
-
         Genrator.createService(DriversApi.class).getArchivedOrders(id).enqueue(new Callback<ResArchived>() {
             @Override
             public void onResponse(Call<ResArchived> call, Response<ResArchived> response) {
-
               if(response.isSuccess()) {
                   totalvalue = 0;
                   adb = new ArchivedOrdersAdb(response.body().getMessage(), getContext());
-
                   arclist.setAdapter(adb);
                   arclist.setLayoutManager(new LinearLayoutManager(getContext()));
-
                   for (int i = 0; i < response.body().getMessage().size(); i++) {
-
                       totalvalue += response.body().getMessage().get(i).getTotalAmount();
                   }
 
