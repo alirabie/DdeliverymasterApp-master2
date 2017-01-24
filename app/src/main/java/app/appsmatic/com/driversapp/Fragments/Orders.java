@@ -1,12 +1,15 @@
 package app.appsmatic.com.driversapp.Fragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -125,12 +128,47 @@ public class Orders extends Fragment {
             @Override
             public void onClick(View v) {
 
+                //Loading Dialog
+                final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setIcon(android.R.drawable.ic_lock_idle_alarm);
+                mProgressDialog.setTitle("Please Wait ..");
+                mProgressDialog.setMessage("Updating Orders ...");
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
                 Fragment frg = null;
                 frg = getFragmentManager().findFragmentByTag(getTag());
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(frg);
                 ft.attach(frg);
                 ft.commit();
+
+                final android.os.Handler mHandler=new android.os.Handler();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        while (true) {
+                            try {
+                                Thread.sleep(1000);
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // TODO Auto-generated method stub
+                                        mProgressDialog.dismiss();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                // TODO: handle exception
+                            }
+                        }
+                    }
+                }).start();
+
+
+
+
+
             }
         });
 
