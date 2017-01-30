@@ -77,20 +77,31 @@ public class Orders extends Fragment {
         HashMap id=new HashMap();
         id.put("UserID", HomeActivty.id);
 
+        //Loading Dialog
+        final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setIcon(android.R.drawable.ic_lock_idle_alarm);
+        mProgressDialog.setTitle("Please Wait ..");
+        mProgressDialog.setMessage("Updating Orders ...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+
         Genrator.createService(DriversApi.class).getOrders(id).enqueue(new Callback<ResOrders>() {
             @Override
             public void onResponse(Call<ResOrders> call, Response<ResOrders> response) {
 
+                    if(mProgressDialog.isShowing())
+                    mProgressDialog.dismiss();
                 if (response.isSuccess()) {
-                    orders.addAll(response.body().getMessage());
-                    if (orders.isEmpty()) {
+
+                    if (response.body().getMessage().isEmpty()) {
                         noOrdersLable.setVisibility(View.VISIBLE);
                     }
 
                     //Log.e("hhhhhh",response.body().getMessage().get(0).getCustomer()+"");
 
                     //Setup Orders List
-                    adb = new OrdersAdb(orders, getActivity());
+                    adb = new OrdersAdb(response.body().getMessage(), getActivity());
                     ordersList = (RecyclerView) getActivity().findViewById(R.id.orderlist);
                     ordersList.setAdapter(adb);
                     ordersList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -128,46 +139,12 @@ public class Orders extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //Loading Dialog
-                final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
-                mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setIcon(android.R.drawable.ic_lock_idle_alarm);
-                mProgressDialog.setTitle("Please Wait ..");
-                mProgressDialog.setMessage("Updating Orders ...");
-                mProgressDialog.setCanceledOnTouchOutside(false);
-                mProgressDialog.show();
                 Fragment frg = null;
                 frg = getFragmentManager().findFragmentByTag(getTag());
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(frg);
                 ft.attach(frg);
                 ft.commit();
-
-                final android.os.Handler mHandler=new android.os.Handler();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // TODO Auto-generated method stub
-                        while (true) {
-                            try {
-                                Thread.sleep(1000);
-                                mHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // TODO Auto-generated method stub
-                                        mProgressDialog.dismiss();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                // TODO: handle exception
-                            }
-                        }
-                    }
-                }).start();
-
-
-
-
 
             }
         });
