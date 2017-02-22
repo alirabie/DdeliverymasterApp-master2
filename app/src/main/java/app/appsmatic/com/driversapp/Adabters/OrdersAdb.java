@@ -34,6 +34,7 @@ import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.Order;
 import app.appsmatic.com.driversapp.API.Models.ResConfirmOrder;
 import app.appsmatic.com.driversapp.GPS.GPSTracker;
+import app.appsmatic.com.driversapp.Guid;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.MapsActivity;
 import app.appsmatic.com.driversapp.Orders_info;
@@ -196,7 +197,7 @@ public class OrdersAdb extends RecyclerView.Adapter<OrdersAdb.vh> {
                             public void onClick(DialogInterface dialog, int id) {
 
                                 HashMap id2=new HashMap();
-                                id2.put("DriverID", HomeActivty.id);
+                                id2.put("DriverID", Guid.driverGuid);
                                 id2.put("OrderID", orders.get(position).getOrderID());
 
 

@@ -60,14 +60,28 @@ public class Splash extends AppCompatActivity {
                     e.printStackTrace();
                 } finally {
                         //Check Saved Username in preference if is empty transfer to login activity
-                    if(SaveSharedPreference.getUserName(getApplicationContext()).length() == 0)
+                    if(SaveSharedPreference.getGuid(getApplicationContext()).isEmpty())
                     {
                         Intent i = new Intent(Splash.this, LoginActivity.class);
                         startActivity(i);
-                        finish();
+                        Splash.this.finish();
                     }
                     else
                     {
+
+
+
+                        startActivity(new Intent(getApplicationContext(), HomeActivty.class));
+                        Guid.driverGuid= SaveSharedPreference.getGuid(getApplicationContext());
+                        Splash.this.finish();
+
+
+
+
+
+
+
+                        /*
                         //if saved username in prefs is not empty use it to login
                         loginData.setUserName(SaveSharedPreference.getUserName(getApplicationContext()) + "");
                         loginData.setPassword(SaveSharedPreference.getUserPassword(getApplicationContext()) + "");
@@ -129,7 +143,7 @@ public class Splash extends AppCompatActivity {
                                                 }).setIcon(android.R.drawable.ic_dialog_alert).show();
 
                                     }
-                                });
+                                });*/
 
 
 

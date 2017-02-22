@@ -14,6 +14,7 @@ import app.appsmatic.com.driversapp.API.Models.Order;
 import app.appsmatic.com.driversapp.API.Models.OrderDetail;
 import app.appsmatic.com.driversapp.API.Models.ResArchived;
 import app.appsmatic.com.driversapp.API.Models.ResConfirmOrder;
+import app.appsmatic.com.driversapp.API.Models.ResLocationUpdate;
 import app.appsmatic.com.driversapp.API.Models.ResOrderDetails;
 import app.appsmatic.com.driversapp.API.Models.ResOrders;
 import app.appsmatic.com.driversapp.API.Models.ResProfile;
@@ -71,6 +72,9 @@ public interface DriversApi {
 
     @POST("driver/update")
     Call<ResponseBody> updateDriverinfo(@Body Object driver);
+
+    @POST("driver/Location")
+    Call<ResLocationUpdate> updateDriverLocation(@Body Object driver);
 
 
 }

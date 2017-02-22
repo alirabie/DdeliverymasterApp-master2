@@ -136,9 +136,12 @@ public class LoginActivity extends AppCompatActivity {
                            String code=response.body().getCode()+"";
                             if (!code.equals("0")) {
                                 LoginActivity.this.finish();
-                                startActivity(new Intent(getApplicationContext(), HomeActivty.class).putExtra("DriverID", response.body().getDriverid()));
-                                //Save UserName And Password in Shared Prefs
-                                SaveSharedPreference.setUserName(getApplicationContext(), user.getText().toString() + "", pass.getText().toString() + "");
+                                startActivity(new Intent(getApplicationContext(), HomeActivty.class));//.putExtra("DriverID", response.body().getDriverid()));
+                                        //Save UserName And Password in Shared Prefs
+                                        SaveSharedPreference.setUserName(getApplicationContext(), user.getText().toString() + "", pass.getText().toString() + "");
+                                        SaveSharedPreference.setGuid(getApplicationContext(), response.body().getDriverid() + "");
+                                        Guid.driverGuid=SaveSharedPreference.getGuid(getApplicationContext());
+
                             } else {
                                 new AlertDialog.Builder(LoginActivity.this)
                                         .setTitle("Authentication Error")

@@ -30,6 +30,7 @@ import app.appsmatic.com.driversapp.API.Models.ArchivedOrder;
 import app.appsmatic.com.driversapp.API.Models.Archived_enhanc;
 import app.appsmatic.com.driversapp.API.Models.ResArchived;
 import app.appsmatic.com.driversapp.Adabters.ArchivedOrdersAdb;
+import app.appsmatic.com.driversapp.Guid;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.MapsActivity;
 import app.appsmatic.com.driversapp.R;
@@ -68,7 +69,7 @@ public class Archived extends Fragment {
 
 
         HashMap id=new HashMap();
-        id.put("UserID", HomeActivty.id);
+        id.put("UserID", Guid.driverGuid);
 
 
 
@@ -128,7 +129,7 @@ public class Archived extends Fragment {
         super.onResume();
         //Send Data Json To Web Service (ID)
         HashMap id=new HashMap();
-        id.put("UserID", HomeActivty.id);
+        id.put("UserID", Guid.driverGuid);
         Genrator.createService(DriversApi.class).getArchivedOrders(id).enqueue(new Callback<ResArchived>() {
             @Override
             public void onResponse(Call<ResArchived> call, Response<ResArchived> response) {

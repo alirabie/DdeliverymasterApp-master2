@@ -11,6 +11,7 @@ public class SaveSharedPreference {
 
     static final String PREF_USER_NAME= "username";
     static final String PREF_USER_PASS= "password";
+    static final String GUID="guid";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -33,6 +34,22 @@ public class SaveSharedPreference {
     {
         return getSharedPreferences(ctx).getString(PREF_USER_PASS, "");
     }
+
+    public static void setGuid(Context ctx,String guid){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(GUID,guid);
+        editor.commit();
+    }
+
+    public static String getGuid(Context ctx) {
+        return getSharedPreferences(ctx).getString(GUID, "");
+    }
+
+
+
+
+
+
 
     public static void clearUserName(Context ctx)
     {

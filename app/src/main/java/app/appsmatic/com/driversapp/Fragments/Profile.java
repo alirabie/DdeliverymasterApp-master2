@@ -26,6 +26,7 @@ import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.DriverProfile;
 import app.appsmatic.com.driversapp.API.Models.ResProfile;
+import app.appsmatic.com.driversapp.Guid;
 import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.LoginActivity;
@@ -107,7 +108,7 @@ public class Profile extends Fragment {
         mProgressDialog.show();
 
         HashMap id=new HashMap();
-        id.put("UserID", HomeActivty.id);
+        id.put("UserID", Guid.driverGuid+"");
 
         Genrator.createService(DriversApi.class).getProfile(id).enqueue(new Callback<ResProfile>() {
             @Override
@@ -124,6 +125,7 @@ public class Profile extends Fragment {
                     byte[] decodedString = Base64.decode(response.body().getMessage().getPersonalPhoto(), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     profileImg.setImageBitmap(decodedByte);
+                    Log.e("code : ",driverProfiledata.getUserID()+"");
                 } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setMessage("Response From Server Not success try again later ... !")
@@ -178,7 +180,7 @@ public class Profile extends Fragment {
 
 
 
-                    Log.e("DATAJSON", dataGson);
+
 
 
                     Genrator.createService(DriversApi.class).updateDriverinfo(hash).enqueue(new Callback<ResponseBody>() {
@@ -188,6 +190,10 @@ public class Profile extends Fragment {
                             if (response.isSuccess()) {
                                 loading.dismiss();
                                 Toast.makeText(getContext(), "ON LINE MODE", Toast.LENGTH_SHORT).show();
+                               /* Gson gson=new Gson();
+                                String test=gson.toJson(hash);
+                                Log.e("DATAJSON",test);*/
+
                             }
 
 
@@ -234,6 +240,7 @@ public class Profile extends Fragment {
                             if (response.isSuccess()) {
                                 loading2.dismiss();
                                 Toast.makeText(getContext(), "OFF LINE MODE", Toast.LENGTH_SHORT).show();
+
                             }
 
                         }
@@ -260,7 +267,8 @@ public class Profile extends Fragment {
             public void onClick(View v) {
 
                 //Clear Login data from prefs
-                SaveSharedPreference.clearUserName(getContext());
+                SaveSharedPreference.setGuid(getContext(),"");
+                Guid.driverGuid="";
                 //Start Login activity
                 startActivity(new Intent(getContext(), LoginActivity.class));
                 getActivity().finish();

@@ -37,6 +37,7 @@ import app.appsmatic.com.driversapp.API.Models.DriverID;
 import app.appsmatic.com.driversapp.API.Models.Order;
 import app.appsmatic.com.driversapp.API.Models.ResOrders;
 import app.appsmatic.com.driversapp.Adabters.OrdersAdb;
+import app.appsmatic.com.driversapp.Guid;
 import app.appsmatic.com.driversapp.HomeActivty;
 import app.appsmatic.com.driversapp.LoginActivity;
 import app.appsmatic.com.driversapp.MapsActivity;
@@ -75,7 +76,7 @@ public class Orders extends Fragment {
         noOrdersLable.setVisibility(View.INVISIBLE);
 
         HashMap id=new HashMap();
-        id.put("UserID", HomeActivty.id);
+        id.put("UserID", Guid.driverGuid);
 
         //Loading Dialog
         final ProgressDialog mProgressDialog = new ProgressDialog(getContext());

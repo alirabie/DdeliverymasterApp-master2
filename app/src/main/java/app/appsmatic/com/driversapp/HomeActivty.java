@@ -39,11 +39,14 @@ import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import app.appsmatic.com.driversapp.API.DriversApi;
 import app.appsmatic.com.driversapp.API.Genrator;
 import app.appsmatic.com.driversapp.API.Models.Order;
+import app.appsmatic.com.driversapp.API.Models.ResLocationUpdate;
 import app.appsmatic.com.driversapp.Adabters.OrdersAdb;
 import app.appsmatic.com.driversapp.Adabters.VeiwpagerAdb;
 import app.appsmatic.com.driversapp.FCM.Config;
@@ -52,13 +55,15 @@ import app.appsmatic.com.driversapp.Fragments.Archived;
 import app.appsmatic.com.driversapp.Fragments.Orders;
 import app.appsmatic.com.driversapp.Fragments.Profile;
 import app.appsmatic.com.driversapp.GPS.GPSTracker;
+import app.appsmatic.com.driversapp.SharedPref.SaveSharedPreference;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class HomeActivty extends AppCompatActivity {
-    public static String id;
+
     static double x;
     static double y;
     private int[] tabIcons = {R.drawable.orders_tab_icon,R.drawable.archived_tab_icon,R.drawable.profile_tab_icon};
@@ -82,6 +87,7 @@ public class HomeActivty extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
 
 
         //Check location permissions for Marshmallow
@@ -171,40 +177,65 @@ public class HomeActivty extends AppCompatActivity {
 
 
 
-        //Get Driver Id
-        id=this.getIntent().getStringExtra("DriverID");
 
 
 
 
-        //Send Location Every 10 S
-        final android.os.Handler mHandler=new android.os.Handler();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                while (true) {
-                    try {
-                        Thread.sleep(10000);
+            //Send Location Every 5 m
+            final android.os.Handler mHandler = new android.os.Handler();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    while (true) {
+                        try {
+                            Thread.sleep(300000);
 
-                        mHandler.post(new Runnable() {
+                            mHandler.post(new Runnable() {
 
-                            @Override
-                            public void run() {
-                                // TODO Auto-generated method stub
-                                GPSTracker gpsTracker=new GPSTracker(getApplicationContext());
-                                 x=gpsTracker.getLatitude();
-                                 y=gpsTracker.getLongitude();
-                                Log.d("Locationnnnnnnnnn",x+"++++++++"+y);
+                                @Override
+                                public void run() {
+                                    // TODO Auto-generated method stub
+                                    GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
+                                    x = gpsTracker.getLatitude();
+                                    y = gpsTracker.getLongitude();
+                                    Log.d("Locationnnnnnnnnn  ", Guid.driverGuid + "   " + x + "++++++++" + y);
 
-                            }
-                        });
-                    } catch (Exception e) {
-                        // TODO: handle exception
+                                    HashMap data = new HashMap();
+                                    data.put("id", Guid.driverGuid);
+                                    data.put("longtitude", y);
+                                    data.put("latitude", x);
+
+                                    Genrator.createService(DriversApi.class).updateDriverLocation(data).enqueue(new Callback<ResLocationUpdate>() {
+                                        @Override
+                                        public void onResponse(Call<ResLocationUpdate> call, Response<ResLocationUpdate> response) {
+                                            if (response.isSuccess()) {
+
+                                                if (response.body().getCode() == 0) {
+                                                    Toast.makeText(HomeActivty.this, response.body().getMessage() + " Please login", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    Toast.makeText(HomeActivty.this, "Location Updated", Toast.LENGTH_LONG).show();
+                                                }
+
+                                            } else {
+                                                Toast.makeText(HomeActivty.this, "Response not Success", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ResLocationUpdate> call, Throwable t) {
+                                            Toast.makeText(HomeActivty.this, "Connection Lost : " + t.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                            });
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        }
                     }
                 }
-            }
-        }).start();
+            }).start();
 
 
 
